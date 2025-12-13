@@ -23,7 +23,7 @@ const DefectForm = ({ defect, onSave, onCancel }: DefectFormProps) => {
         const response = await api.get('/users'); // Assuming a /users endpoint exists for fetching all users
         setUsers(response.data);
       } catch (err) {
-        console.error('Failed to fetch users:', err);
+        console.error('Не удалось загрузить пользователей:', err);
       }
     };
     fetchUsers();
@@ -59,7 +59,7 @@ const DefectForm = ({ defect, onSave, onCancel }: DefectFormProps) => {
       }
       onSave(); // Notify parent component of successful save
     } catch (err) {
-      setError('Failed to save defect.');
+      setError('Не удалось сохранить дефект.');
       console.error(err);
     }
   };
@@ -67,11 +67,11 @@ const DefectForm = ({ defect, onSave, onCancel }: DefectFormProps) => {
   return (
     <div className="card mt-4">
       <div className="card-body">
-        <h5 className="card-title">{defect ? 'Edit Defect' : 'Create New Defect'}</h5>
+        <h5 className="card-title">{defect ? 'Редактировать дефект' : 'Создать новый дефект'}</h5>
         <form onSubmit={handleSubmit}>
           {error && <div className="alert alert-danger">{error}</div>}
           <div className="mb-3">
-            <label htmlFor="title" className="form-label">Title</label>
+            <label htmlFor="title" className="form-label">Название</label>
             <input
               type="text"
               className="form-control"
@@ -82,7 +82,7 @@ const DefectForm = ({ defect, onSave, onCancel }: DefectFormProps) => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="description" className="form-label">Description</label>
+            <label htmlFor="description" className="form-label">Описание</label>
             <textarea
               className="form-control"
               id="description"
@@ -91,35 +91,35 @@ const DefectForm = ({ defect, onSave, onCancel }: DefectFormProps) => {
             ></textarea>
           </div>
           <div className="mb-3">
-            <label htmlFor="priority" className="form-label">Priority</label>
+            <label htmlFor="priority" className="form-label">Приоритет</label>
             <select
               className="form-select"
               id="priority"
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
             >
-              <option value="LOW">Low</option>
-              <option value="MEDIUM">Medium</option>
-              <option value="HIGH">High</option>
+              <option value="LOW">Низкий</option>
+              <option value="MEDIUM">Средний</option>
+              <option value="HIGH">Высокий</option>
             </select>
           </div>
           <div className="mb-3">
-            <label htmlFor="status" className="form-label">Status</label>
+            <label htmlFor="status" className="form-label">Статус</label>
             <select
               className="form-select"
               id="status"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="NEW">New</option>
-              <option value="IN_PROGRESS">In Progress</option>
-              <option value="UNDER_REVIEW">Under Review</option>
-              <option value="CLOSED">Closed</option>
-              <option value="CANCELLED">Cancelled</option>
+              <option value="NEW">Новая</option>
+              <option value="IN_PROGRESS">В работе</option>
+              <option value="UNDER_REVIEW">На проверке</option>
+              <option value="CLOSED">Закрыта</option>
+              <option value="CANCELLED">Отменена</option>
             </select>
           </div>
           <div className="mb-3">
-            <label htmlFor="assignee" className="form-label">Assignee</label>
+            <label htmlFor="assignee" className="form-label">Исполнитель</label>
             <select
               className="form-select"
               id="assignee"
@@ -127,7 +127,7 @@ const DefectForm = ({ defect, onSave, onCancel }: DefectFormProps) => {
               onChange={(e) => setAssigneeId(e.target.value)}
               required
             >
-              <option value="">Select Assignee</option>
+              <option value="">Выберите исполнителя</option>
               {users.map((user) => (
                 <option key={user.id} value={user.id}>
                   {user.email}
@@ -135,8 +135,8 @@ const DefectForm = ({ defect, onSave, onCancel }: DefectFormProps) => {
               ))}
             </select>
           </div>
-          <button type="submit" className="btn btn-primary me-2">Save Defect</button>
-          <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancel</button>
+          <button type="submit" className="btn btn-primary me-2">Сохранить</button>
+          <button type="button" className="btn btn-secondary" onClick={onCancel}>Отмена</button>
         </form>
       </div>
     </div>

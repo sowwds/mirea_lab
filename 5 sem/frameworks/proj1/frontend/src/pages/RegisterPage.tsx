@@ -15,13 +15,13 @@ const RegisterPage = () => {
     setMessage('');
     try {
       await axios.post('http://localhost:3000/api/auth/register', { email, password, role: 'ENGINEER' });
-      setMessage('Registration successful! You will be redirected to login.');
+      setMessage('Регистрация успешна! Вы будете перенаправлены на страницу входа.');
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 409) {
-        setError('A user with this email already exists.');
+        setError('Пользователь с такой почтой уже существует.');
       } else {
-        setError('Failed to register. Please try again.');
+        setError('Не удалось зарегистрироваться. Попробуйте снова.');
       }
       console.error(err);
     }
@@ -33,10 +33,10 @@ const RegisterPage = () => {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h2 className="card-title text-center">Register</h2>
+              <h2 className="card-title text-center">Регистрация</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email address</label>
+                  <label htmlFor="email" className="form-label">Адрес электронной почты</label>
                   <input
                     type="email"
                     className="form-control"
@@ -47,7 +47,7 @@ const RegisterPage = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
+                  <label htmlFor="password" className="form-label">Пароль</label>
                   <input
                     type="password"
                     className="form-control"
@@ -60,12 +60,12 @@ const RegisterPage = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {message && <div className="alert alert-success">{message}</div>}
                 <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">Register</button>
+                    <button type="submit" className="btn btn-primary">Зарегистрироваться</button>
                 </div>
               </form>
               <div className="text-center mt-3">
-                <span>Already have an account? </span>
-                <Link to="/login">Login here</Link>
+                <span>Уже есть аккаунт? </span>
+                <Link to="/login">Войдите</Link>
               </div>
             </div>
           </div>

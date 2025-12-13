@@ -19,7 +19,7 @@ const DashboardPage = () => {
         const decodedToken: any = jwtDecode(token);
         setUserRole(decodedToken.role);
       } catch (err) {
-        console.error('Failed to decode token:', err);
+        console.error('Не удалось декодировать токен:', err);
         setUserRole(null);
       }
     }
@@ -32,7 +32,7 @@ const DashboardPage = () => {
       setDefects(response.data);
       setError('');
     } catch (err) {
-      setError('Failed to fetch defects.');
+      setError('Не удалось загрузить дефекты.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -54,12 +54,12 @@ const DashboardPage = () => {
   };
 
   const handleDeleteClick = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this defect?')) {
+    if (window.confirm('Вы уверены, что хотите удалить этот дефект?')) {
       try {
         await api.delete(`/defects/${id}`);
         fetchDefects(); // Refresh list
       } catch (err) {
-        setError('Failed to delete defect. Check your permissions.');
+        setError('Не удалось удалить дефект. Проверьте свои права доступа.');
         console.error(err);
       }
     }
@@ -78,12 +78,12 @@ const DashboardPage = () => {
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Defects Dashboard</h1>
+        <h1>Панель управления дефектами</h1>
         <div>
           {userRole !== 'OBSERVER' && (
-            <button className="btn btn-success me-2" onClick={handleCreateClick}>Create Defect</button>
+            <button className="btn btn-success me-2" onClick={handleCreateClick}>Создать дефект</button>
           )}
-          <button className="btn btn-danger" onClick={logout}>Logout</button>
+          <button className="btn btn-danger" onClick={logout}>Выйти</button>
         </div>
       </div>
 
@@ -100,20 +100,20 @@ const DashboardPage = () => {
       {!showForm && (
         <>
           {loading ? (
-            <p>Loading defects...</p>
+            <p>Загрузка дефектов...</p>
           ) : defects.length === 0 ? (
-            <p>No defects found. Create one!</p>
+            <p>Дефекты не найдены. Создайте новый!</p>
           ) : (
             <div className="table-responsive">
               <table className="table table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Priority</th>
-                    <th>Status</th>
-                    <th>Assignee</th>
-                    <th>Actions</th>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Приоритет</th>
+                    <th>Статус</th>
+                    <th>Исполнитель</th>
+                    <th>Действия</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -127,9 +127,9 @@ const DashboardPage = () => {
                       <td>
                         {userRole !== 'OBSERVER' && (
                           <>
-                            <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditClick(defect)}>Edit</button>
+                            <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditClick(defect)}>Редактировать</button>
                             {userRole === 'MANAGER' && ( // Only manager can delete
-                              <button className="btn btn-danger btn-sm" onClick={() => handleDeleteClick(defect.id)}>Delete</button>
+                              <button className="btn btn-danger btn-sm" onClick={() => handleDeleteClick(defect.id)}>Удалить</button>
                             )}
                           </>
                         )}

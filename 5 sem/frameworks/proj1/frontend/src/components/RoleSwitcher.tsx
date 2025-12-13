@@ -14,7 +14,7 @@ const RoleSwitcher = () => {
         const decodedToken: any = jwtDecode(token);
         setCurrentRole(decodedToken.role);
       } catch (err) {
-        console.error('Failed to decode token:', err);
+        console.error('Не удалось декодировать токен:', err);
       }
     }
   }, [token]);
@@ -26,10 +26,10 @@ const RoleSwitcher = () => {
       const newToken = response.data.token;
       if (newToken) {
         login(newToken); // Update the auth context with the new token
-        alert(`Role successfully switched to ${newRole}`);
+        alert(`Роль успешно изменена на ${newRole}`);
       }
     } catch (err) {
-      setError('Failed to switch role.');
+      setError('Не удалось сменить роль.');
       console.error(err);
     }
   };
@@ -38,15 +38,15 @@ const RoleSwitcher = () => {
 
   return (
     <div className="d-flex align-items-center">
-      <span className="navbar-text me-2">Role: {currentRole}</span>
+      <span className="navbar-text me-2">Роль: {currentRole}</span>
       <div className="btn-group">
         <button type="button" className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Switch Role
+          Сменить роль
         </button>
         <ul className="dropdown-menu dropdown-menu-end">
-          <li><button className="dropdown-item" onClick={() => handleRoleChange('ENGINEER')}>Engineer</button></li>
-          <li><button className="dropdown-item" onClick={() => handleRoleChange('MANAGER')}>Manager</button></li>
-          <li><button className="dropdown-item" onClick={() => handleRoleChange('OBSERVER')}>Observer</button></li>
+          <li><button className="dropdown-item" onClick={() => handleRoleChange('ENGINEER')}>Инженер</button></li>
+          <li><button className="dropdown-item" onClick={() => handleRoleChange('MANAGER')}>Менеджер</button></li>
+          <li><button className="dropdown-item" onClick={() => handleRoleChange('OBSERVER')}>Наблюдатель</button></li>
         </ul>
       </div>
       {error && <small className="text-danger ms-2">{error}</small>}

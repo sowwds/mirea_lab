@@ -18,7 +18,7 @@ const LoginPage = () => {
       login(response.data.token);
       navigate('/');
     } catch (err) {
-      setError('Failed to login. Please check your credentials.');
+      setError('Не удалось войти. Проверьте почту и пароль.');
       console.error(err);
     }
   };
@@ -29,10 +29,10 @@ const LoginPage = () => {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h2 className="card-title text-center">Login</h2>
+              <h2 className="card-title text-center">Вход в систему</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email address</label>
+                  <label htmlFor="email" className="form-label">Адрес электронной почты</label>
                   <input
                     type="email"
                     className="form-control"
@@ -43,7 +43,7 @@ const LoginPage = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
+                  <label htmlFor="password" className="form-label">Пароль</label>
                   <input
                     type="password"
                     className="form-control"
@@ -55,12 +55,12 @@ const LoginPage = () => {
                 </div>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">Login</button>
+                    <button type="submit" className="btn btn-primary">Войти</button>
                 </div>
               </form>
               <div className="text-center mt-3">
-                <span>Don't have an account? </span>
-                <Link to="/register">Register here</Link>
+                <span>Нет аккаунта? </span>
+                <Link to="/register">Зарегистрируйтесь</Link>
               </div>
             </div>
           </div>
