@@ -1,0 +1,27 @@
+services:
+  api_gateway:
+    build: api_gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+  service_users:
+    build: service_users
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+  service_orders:
+    build: service_orders
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
