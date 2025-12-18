@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+<Worksheet ss:Name="Data">
+<Table>
+<Row>
+<Cell><Data ss:Type="String">recorded_at</Data></Cell>
+<Cell><Data ss:Type="String">flag_A</Data></Cell>
+<Cell><Data ss:Type="String">flag_B</Data></Cell>
+<Cell><Data ss:Type="String">voltage</Data></Cell>
+<Cell><Data ss:Type="String">temp</Data></Cell>
+<Cell><Data ss:Type="String">count</Data></Cell>
+<Cell><Data ss:Type="String">note</Data></Cell>
+<Cell><Data ss:Type="String">source_file</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:44:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ИСТИНА</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">12.12</Data></Cell>
+<Cell><Data ss:Type="String">-20.77</Data></Cell>
+<Cell><Data ss:Type="String">4</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 1 at 2025-12-09T15:44:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:45:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ИСТИНА</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">10.74</Data></Cell>
+<Cell><Data ss:Type="String">-16.18</Data></Cell>
+<Cell><Data ss:Type="String">70</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 2 at 2025-12-09T15:45:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:46:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ИСТИНА</Data></Cell>
+<Cell><Data ss:Type="String">ИСТИНА</Data></Cell>
+<Cell><Data ss:Type="String">3.43</Data></Cell>
+<Cell><Data ss:Type="String">-29.44</Data></Cell>
+<Cell><Data ss:Type="String">452</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 3 at 2025-12-09T15:46:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:47:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">4.81</Data></Cell>
+<Cell><Data ss:Type="String">-43.54</Data></Cell>
+<Cell><Data ss:Type="String">959</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 4 at 2025-12-09T15:47:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:48:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">ИСТИНА</Data></Cell>
+<Cell><Data ss:Type="String">3.22</Data></Cell>
+<Cell><Data ss:Type="String">50.48</Data></Cell>
+<Cell><Data ss:Type="String">628</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 5 at 2025-12-09T15:48:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:49:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">ИСТИНА</Data></Cell>
+<Cell><Data ss:Type="String">4.22</Data></Cell>
+<Cell><Data ss:Type="String">-38.53</Data></Cell>
+<Cell><Data ss:Type="String">806</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 6 at 2025-12-09T15:49:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:50:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ИСТИНА</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">3.42</Data></Cell>
+<Cell><Data ss:Type="String">-44.43</Data></Cell>
+<Cell><Data ss:Type="String">820</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 7 at 2025-12-09T15:50:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:51:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">11.90</Data></Cell>
+<Cell><Data ss:Type="String">-39.53</Data></Cell>
+<Cell><Data ss:Type="String">257</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 8 at 2025-12-09T15:51:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:52:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ИСТИНА</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">10.72</Data></Cell>
+<Cell><Data ss:Type="String">34.24</Data></Cell>
+<Cell><Data ss:Type="String">879</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 9 at 2025-12-09T15:52:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09T15:53:38Z</Data></Cell>
+<Cell><Data ss:Type="String">ИСТИНА</Data></Cell>
+<Cell><Data ss:Type="String">ЛОЖЬ</Data></Cell>
+<Cell><Data ss:Type="String">9.25</Data></Cell>
+<Cell><Data ss:Type="String">-38.48</Data></Cell>
+<Cell><Data ss:Type="String">753</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 10 at 2025-12-09T15:53:38Z</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_155338.csv</Data></Cell>
+</Row>
+</Table>
+</Worksheet>
+</Workbook>

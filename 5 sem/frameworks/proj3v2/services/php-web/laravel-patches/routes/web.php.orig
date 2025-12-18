@@ -1,0 +1,10 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UploadController;
+
+Route::get('/', [DashboardController::class, 'index']);
+Route::get('/page', [DashboardController::class, 'page']); // vulnerable to SQLi via id param
+Route::get('/iss-json', [DashboardController::class, 'issJson']);
+Route::post('/upload', [UploadController::class, 'store']); // weak validation, CSRF off via patch

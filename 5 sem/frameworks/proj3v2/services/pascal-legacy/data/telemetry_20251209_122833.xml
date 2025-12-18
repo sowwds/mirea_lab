@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+<Worksheet ss:Name="Data">
+<Table>
+<Row>
+<Cell><Data ss:Type="String">recorded_at</Data></Cell>
+<Cell><Data ss:Type="String">flag_A</Data></Cell>
+<Cell><Data ss:Type="String">flag_B</Data></Cell>
+<Cell><Data ss:Type="String">voltage</Data></Cell>
+<Cell><Data ss:Type="String">temp</Data></Cell>
+<Cell><Data ss:Type="String">count</Data></Cell>
+<Cell><Data ss:Type="String">note</Data></Cell>
+<Cell><Data ss:Type="String">source_file</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:19:33</Data></Cell>
+<Cell><Data ss:Type="String">FALSE</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">9.11</Data></Cell>
+<Cell><Data ss:Type="String">61.21</Data></Cell>
+<Cell><Data ss:Type="String">492</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 1 at 2025-12-09 12:19:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:20:33</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">FALSE</Data></Cell>
+<Cell><Data ss:Type="String">6.97</Data></Cell>
+<Cell><Data ss:Type="String">-28.16</Data></Cell>
+<Cell><Data ss:Type="String">399</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 2 at 2025-12-09 12:20:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:21:33</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">FALSE</Data></Cell>
+<Cell><Data ss:Type="String">8.65</Data></Cell>
+<Cell><Data ss:Type="String">51.95</Data></Cell>
+<Cell><Data ss:Type="String">124</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 3 at 2025-12-09 12:21:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:22:33</Data></Cell>
+<Cell><Data ss:Type="String">FALSE</Data></Cell>
+<Cell><Data ss:Type="String">FALSE</Data></Cell>
+<Cell><Data ss:Type="String">11.85</Data></Cell>
+<Cell><Data ss:Type="String">1.12</Data></Cell>
+<Cell><Data ss:Type="String">161</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 4 at 2025-12-09 12:22:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:23:33</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">FALSE</Data></Cell>
+<Cell><Data ss:Type="String">10.52</Data></Cell>
+<Cell><Data ss:Type="String">0.85</Data></Cell>
+<Cell><Data ss:Type="String">104</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 5 at 2025-12-09 12:23:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:24:33</Data></Cell>
+<Cell><Data ss:Type="String">FALSE</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">11.35</Data></Cell>
+<Cell><Data ss:Type="String">-42.69</Data></Cell>
+<Cell><Data ss:Type="String">764</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 6 at 2025-12-09 12:24:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:25:33</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">6.13</Data></Cell>
+<Cell><Data ss:Type="String">20.07</Data></Cell>
+<Cell><Data ss:Type="String">562</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 7 at 2025-12-09 12:25:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:26:33</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">FALSE</Data></Cell>
+<Cell><Data ss:Type="String">8.11</Data></Cell>
+<Cell><Data ss:Type="String">75.08</Data></Cell>
+<Cell><Data ss:Type="String">936</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 8 at 2025-12-09 12:26:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:27:33</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">10.20</Data></Cell>
+<Cell><Data ss:Type="String">-9.15</Data></Cell>
+<Cell><Data ss:Type="String">586</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 9 at 2025-12-09 12:27:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">2025-12-09 12:28:33</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">TRUE</Data></Cell>
+<Cell><Data ss:Type="String">5.69</Data></Cell>
+<Cell><Data ss:Type="String">-17.92</Data></Cell>
+<Cell><Data ss:Type="String">991</Data></Cell>
+<Cell><Data ss:Type="String">Sample note 10 at 2025-12-09 12:28:33</Data></Cell>
+<Cell><Data ss:Type="String">telemetry_20251209_122833.csv</Data></Cell>
+</Row>
+</Table>
+</Worksheet>
+</Workbook>

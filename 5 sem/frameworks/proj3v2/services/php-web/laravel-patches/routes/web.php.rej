@@ -1,0 +1,12 @@
+--- web.php.orig	1970-01-01 00:00:00.000000000 +0000
++++ web.php	1970-01-01 00:00:00.000000000 +0000
+@@ -1,9 +0,0 @@
+-<?php
+-use Illuminate\Support\Facades\Route;
+-use App\Http\Controllers\OsdrController;
+-
+-Route::get('/', function() { return redirect('/osdr'); });
+-Route::get('/osdr', [OsdrController::class, 'index']);
+-
+-// учебные уязвимые маршруты проекта остаются без изменений
+-
