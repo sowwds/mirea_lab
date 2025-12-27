@@ -1,0 +1,11 @@
+# Ignore image files
+*.png
+*.jpg
+
+# Ignore CSV files
+*.csv
+
+# Required data
+images/
+img/
+KMeans/
