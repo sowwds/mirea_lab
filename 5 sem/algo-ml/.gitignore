@@ -4,8 +4,3 @@
 
 # Ignore CSV files
 *.csv
-
-# Required data
-images/
-img/
-KMeans/
