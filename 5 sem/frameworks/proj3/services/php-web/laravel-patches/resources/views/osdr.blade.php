@@ -34,7 +34,7 @@
           <td>{{ $row['updated_at'] ?? '—' }}</td>
           <td>{{ $row['inserted_at'] ?? '—' }}</td>
           <td>
-            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#raw-{{ $row['id'] }}-{{ md5($row['dataset_id'] ?? (string)$row['id']) }}">JSON</button>
+            <button class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#raw-{{ $row['id'] }}-{{ md5($row['dataset_id'] ?? (string)$row['id']) }}" style="background: rgba(255,255,255,0.9); color: var(--mint-dark); border: 2px solid var(--mint-medium); border-radius: 8px; padding: 4px 12px;">JSON</button>
           </td>
         </tr>
         <tr class="collapse" id="raw-{{ $row['id'] }}-{{ md5($row['dataset_id'] ?? (string)$row['id']) }}">

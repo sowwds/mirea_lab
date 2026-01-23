@@ -22,10 +22,28 @@ CREATE TABLE IF NOT EXISTS cms_pages (
     body TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS cms_blocks (
+    id BIGSERIAL PRIMARY KEY,
+    slug TEXT UNIQUE NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- Seed with deliberately unsafe content for XSS practice
 INSERT INTO cms_pages(slug, title, body)
 VALUES
 ('welcome', 'Добро пожаловать', '<h3>Демо контент</h3><p>Этот текст хранится в БД</p>'),
 ('unsafe', 'Небезопасный пример', '<script>console.log("XSS training")
 </script><p>Если вы видите всплывашку значит защита не работает</p>')
+ON CONFLICT DO NOTHING;
+
+-- Seed cms_blocks
+INSERT INTO cms_blocks(slug, title, content, is_active)
+VALUES
+('demo', 'Демо страница', '<h1>Демо контент CMS</h1><p>Это демонстрационная страница из таблицы cms_blocks</p>', TRUE),
+('welcome', 'Добро пожаловать', '<h3>Демо контент</h3><p>Этот текст хранится в БД</p>', TRUE),
+('dashboard_experiment', 'Эксперимент', '<p>Экспериментальный контент для dashboard</p>', TRUE)
 ON CONFLICT DO NOTHING;

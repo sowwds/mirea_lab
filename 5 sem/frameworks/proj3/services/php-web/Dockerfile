@@ -1,7 +1,9 @@
 FROM php:8.3-fpm-alpine
 
 # пакеты и расширения
-RUN apk add --no-cache bash curl git unzip rsync postgresql-dev \
+RUN apk add --no-cache bash curl git unzip rsync postgresql-dev $PHPIZE_DEPS \
+ && pecl install redis \
+ && docker-php-ext-enable redis \
  && docker-php-ext-install pdo pdo_pgsql
 
 # composer

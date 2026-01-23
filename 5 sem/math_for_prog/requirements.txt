@@ -1,0 +1,6 @@
+numpy
+scipy
+sympy
+mpmath
+matplotlib
+ipython

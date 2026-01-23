@@ -3,21 +3,40 @@
 @section('content')
 <div class="container pb-5">
   {{-- верхние карточки --}}
-  <div class="row g-3 mb-2">
-    <div class="col-6 col-md-3"><div class="border rounded p-2 text-center">
-      <div class="small text-muted">Скорость МКС</div>
-      <div class="fs-4">{{ isset(($iss['payload'] ?? [])['velocity']) ? number_format($iss['payload']['velocity'],0,'',' ') : '—' }}</div>
-    </div></div>
-    <div class="col-6 col-md-3"><div class="border rounded p-2 text-center">
-      <div class="small text-muted">Высота МКС</div>
-      <div class="fs-4">{{ isset(($iss['payload'] ?? [])['altitude']) ? number_format($iss['payload']['altitude'],0,'',' ') : '—' }}</div>
-    </div></div>
+  <div class="row g-3 mb-3">
+    <div class="col-12">
+      <div class="page-hero glass p-4">
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+          <div>
+            <div class="text-uppercase small text-muted">Космический обзор</div>
+            <h2 class="mb-1">Орбита, события и галерея JWST</h2>
+            <div class="text-secondary">Данные с внешних API: ISS, AstronomyAPI, JWST</div>
+          </div>
+          <div class="d-flex gap-2">
+            <a class="btn mint-btn" href="/telemetry">Открыть Telemetry</a>
+            <a class="btn mint-btn" href="/osdr" style="background: rgba(255,255,255,0.9); color: var(--mint-dark); border: 2px solid var(--mint-medium);">OSDR</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="glass rounded p-3 h-100">
+        <div class="text-uppercase small text-muted">Скорость МКС</div>
+        <div class="fs-3 fw-bold">{{ isset(($iss['payload'] ?? [])['velocity']) ? number_format($iss['payload']['velocity'],0,'',' ') : '—' }} <span class="fs-6 text-secondary">км/ч</span></div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="glass rounded p-3 h-100">
+        <div class="text-uppercase small text-muted">Высота МКС</div>
+        <div class="fs-3 fw-bold">{{ isset(($iss['payload'] ?? [])['altitude']) ? number_format($iss['payload']['altitude'],0,'',' ') : '—' }} <span class="fs-6 text-secondary">км</span></div>
+      </div>
+    </div>
   </div>
 
   <div class="row g-3">
     {{-- левая колонка: JWST наблюдение (как раньше было под APOD можно держать своим блоком) --}}
     <div class="col-lg-7">
-      <div class="card shadow-sm h-100">
+      <div class="glass rounded h-100 p-3">
         <div class="card-body">
           <h5 class="card-title">JWST — выбранное наблюдение</h5>
           <div class="text-muted">Этот блок остаётся как был (JSON/сводка). Основная галерея ниже.</div>
@@ -27,7 +46,7 @@
 
     {{-- правая колонка: карта МКС --}}
     <div class="col-lg-5">
-      <div class="card shadow-sm h-100">
+      <div class="glass rounded h-100 p-3">
         <div class="card-body">
           <h5 class="card-title">МКС — положение и движение</h5>
           <div id="map" class="rounded mb-2 border" style="height:300px"></div>
@@ -41,7 +60,7 @@
 
     {{-- НИЖНЯЯ ПОЛОСА: НОВАЯ ГАЛЕРЕЯ JWST --}}
     <div class="col-12">
-      <div class="card shadow-sm">
+      <div class="glass rounded p-3">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="card-title m-0">JWST — последние изображения</h5>
@@ -69,7 +88,7 @@
                 </select>
               </div>
               <div class="col-auto">
-                <button class="btn btn-sm btn-primary" type="submit">Показать</button>
+                <button class="btn btn-sm mint-btn" type="submit" style="padding: 6px 16px; font-size: 0.875rem;">Показать</button>
               </div>
             </form>
           </div>
@@ -198,7 +217,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     <!-- ASTRO — события -->
     <div class="col-12 order-first mt-3">
-      <div class="card shadow-sm">
+      <div class="glass rounded p-3">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="card-title m-0">Астрономические события (AstronomyAPI)</h5>
@@ -213,7 +232,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 <input type="number" min="1" max="30" class="form-control form-control-sm" name="days" value="7" style="width:90px" title="дней">
               </div>
               <div class="col-auto">
-                <button class="btn btn-sm btn-primary" type="submit">Показать</button>
+                <button class="btn btn-sm mint-btn" type="submit" style="padding: 6px 16px; font-size: 0.875rem;">Показать</button>
               </div>
             </form>
           </div>
@@ -304,8 +323,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
 {{-- ===== Данный блок ===== --}}
-<div class="card mt-3">
-  <div class="card-header fw-semibold">CMS</div>
+<div class="glass rounded p-3 mt-3">
+  <div class="card-header fw-semibold bg-transparent border-0 text-dark">CMS</div>
   <div class="card-body">
     @php
       try {
@@ -320,8 +339,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 </div>
 
 {{-- ===== CMS-блок из БД (нарочно сырая вставка) ===== --}}
-<div class="card mt-3">
-  <div class="card-header fw-semibold">CMS — блок из БД</div>
+<div class="glass rounded p-3 mt-3">
+  <div class="card-header fw-semibold bg-transparent border-0 text-dark">CMS — блок из БД</div>
   <div class="card-body">
     @php
       try {
@@ -353,8 +372,8 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 {{-- ===== CMS-блок из БД (нарочно сырая вставка) ===== --}}
-<div class="card mt-3">
-  <div class="card-header fw-semibold">CMS — блок из БД</div>
+<div class="glass rounded p-3 mt-3">
+  <div class="card-header fw-semibold bg-transparent border-0 text-dark">CMS — блок из БД</div>
   <div class="card-body">
     @php
       try {

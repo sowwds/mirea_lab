@@ -8,7 +8,7 @@ volumes:
 
 services:
   db:
-    image: postgres:16
+    image: postgres:16-alpine
     container_name: iss_db
     environment:
       POSTGRES_DB: monolith
@@ -33,8 +33,9 @@ services:
     container_name: rust_iss
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgres://monouser:monopass@db:5432/monolith}
-      NASA_API_URL: ${NASA_API_URL:-}
-      NASA_API_KEY: ${NASA_API_KEY:-}
+      NASA_API_KEY: "XKxLpSJn550T4V3b887U6o3Mut1kx14ZTmbGwvhV"
+      NASA_NEO_FEED_URL: "https://api.nasa.gov/neo/rest/v1/feed"
+      NASA_APOD_URL: "https://api.nasa.gov/planetary/apod"
       FETCH_EVERY_SECONDS: ${FETCH_EVERY_SECONDS:-600}
       WHERE_ISS_URL: ${WHERE_ISS_URL:-https://api.wheretheiss.at/v1/satellites/25544}
     depends_on:
@@ -50,15 +51,20 @@ services:
       context: ./services/php-web
     container_name: php_web
     environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8082
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
       JWST_HOST: https://api.jwstapi.com
       JWST_API_KEY: baa96cdf-4a82-45f1-b986-d10a96826442
       JWST_EMAIL: burnfeniks@yandex.ru
       JWST_PROGRAM_ID: "2734"
-      ASTRO_APP_ID: "745a5e07-70ae-49fc-8014-6a509551f829"
-      ASTRO_APP_SECRET: "fe85a6503e3dd694a5d888effb336aefbbb5f54f348a134bd84126de5f69f536c5f05e75a55d395f41ae789b037bed48b7a505a690637acbf2108f5aefe3d934e0ab7b23bf469552d5eb6fc428f8ea981b02323cf3f6ec996ad7b6eab8312f786fd8c25eafc22cea532030c8dc3749c4"
-      APP_ENV: local
-      APP_DEBUG: "true"
-      APP_URL: http://localhost:8080
+      ASTRO_APP_ID: "4f5b8adf-0982-45ac-8751-ebb6afe45ca1"
+      ASTRO_APP_SECRET: "8003dc9a62e1377154929545aea681c3a6ad75c6e3aa88c9b2e9ccc7060411d5762ecd178141a7b186450265141f867ed17158905140586030302d59f25998a94afa8ec989adab6b19b0e9110a2e9b1726e55e36672d9d4767feb37807a2c20e3640e556c1f69314394f0ac202b2b3f8"
       DB_CONNECTION: pgsql
       DB_HOST: db
       DB_PORT: 5432
@@ -87,7 +93,16 @@ services:
     networks:
       - backend
     ports:
-      - "8080:80"
+      - "8082:80"
+
+  redis:
+    image: redis:7-alpine
+    container_name: cache_redis
+    command: ["redis-server","--save","60","1000","--loglevel","warning"]
+    networks:
+      - backend
+    ports:
+      - "6379:6379"
 
   pascal_legacy:
     build:
@@ -105,6 +120,6 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - csvdata:/data/csv
+      - ./services/pascal-legacy/data:/data/csv
     networks:
       - backend
