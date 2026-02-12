@@ -1,7 +1,7 @@
 # Собрание практических работ
 
 <p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/MIREA_coat_of_arms.png" alt="Герб РТУ МИРЭА" width="150" />
+  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/MIREA_coat_of_arms.png" alt="Герб РТУ МИРЭА" width="150" />
   <br>
   <h1>РТУ МИРЭА</h1>
   <h3>09.03.02 Информационные системы и технологии (Фуллстек разработка)</h3>
@@ -18,3 +18,6 @@
 
 ### [📂 5 Семестр](./5%20sem)
 > Материалы за 5-й семестр обучения.
+
+### [📂 6 Семестр](./6%20sem)
+> Материалы за 6-й семестр обучения.
