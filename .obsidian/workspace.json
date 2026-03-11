@@ -20,8 +20,21 @@
               "icon": "lucide-file",
               "title": "Ответы на вопросы Практика 1 Ефремов ЭФБО-10-23"
             }
+          },
+          {
+            "id": "3995d9d70eeaccf5",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.12.4"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.12.4"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -183,8 +196,14 @@
       "bases:Create new base": false
     }
   },
-  "active": "8067c7871affa1bd",
+  "active": "3995d9d70eeaccf5",
   "lastOpenFiles": [
+    "6 sem/prog_techn/lab2_chpu/image.png",
+    "6 sem/prog_techn/lab2_chpu/Программирование технологического оборудования. Лабораторная 2.pdf",
+    "6 sem/prog_techn/lab2_chpu/lab2_chpu.md",
+    "6 sem/prog_techn/lab2_chpu",
+    "Untitled.md",
+    "6 sem/prog_techn/lab1/Ответы на вопросы Практика 1 Ефремов ЭФБО-10-23.md",
     "6 sem/prog_techn/lab3/answer.pdf",
     "6 sem/prog_techn/lab3/answer_tmp.html",
     "6 sem/prog_techn/lab2/answer.pdf",
@@ -200,9 +219,6 @@
     "6 sem/prog_techn/lab2/answer.md",
     "6 sem/prog_techn/lab4/Программирование технологического оборудования Практические занятия 04.pdf",
     "6 sem/prog_techn/lab3/Программирование технологического оборудования Практические занятия 03.pdf",
-    "6 sem/prog_techn/lab2/Программирование технологического оборудования Практические занятия 02.pdf",
-    "6 sem/prog_techn/lab4",
-    "6 sem/prog_techn/lab3",
     "6 sem/math_for_prog/конспект.md"
   ]
 }
