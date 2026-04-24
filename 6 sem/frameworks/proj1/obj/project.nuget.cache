@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "eDDVmtx7e6NYRtv5RgLN0c57AK6+1zp9SoP9domNEZ7tNvW37/AIkJ2c3cwx9ETJogSibkw175VSG3VpNDKuYA==",
+  "success": true,
+  "projectFilePath": "/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/proj1.csproj",
+  "expectedPackageFiles": [
+    "/home/aleksey/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/home/aleksey/.nuget/packages/microsoft.openapi/1.6.14/microsoft.openapi.1.6.14.nupkg.sha512",
+    "/home/aleksey/.nuget/packages/swashbuckle.aspnetcore/6.6.2/swashbuckle.aspnetcore.6.6.2.nupkg.sha512",
+    "/home/aleksey/.nuget/packages/swashbuckle.aspnetcore.swagger/6.6.2/swashbuckle.aspnetcore.swagger.6.6.2.nupkg.sha512",
+    "/home/aleksey/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.6.2/swashbuckle.aspnetcore.swaggergen.6.6.2.nupkg.sha512",
+    "/home/aleksey/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.6.2/swashbuckle.aspnetcore.swaggerui.6.6.2.nupkg.sha512",
+    "/home/aleksey/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512"
+  ],
+  "logs": []
+}

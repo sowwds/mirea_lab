@@ -1,0 +1,33 @@
+@proj1_HostAddress = http://localhost:5078
+
+GET {{proj1_HostAddress}}/api/items
+Accept: application/json
+
+###
+
+GET {{proj1_HostAddress}}/api/items/999
+Accept: application/json
+
+###
+
+POST {{proj1_HostAddress}}/api/items
+Content-Type: application/json
+
+{
+  "title": "Prepare protection questions",
+  "subject": "Frameworks",
+  "difficulty": 6,
+  "estimatedHours": 4
+}
+
+###
+
+POST {{proj1_HostAddress}}/api/items
+Content-Type: application/json
+
+{
+  "title": "",
+  "subject": "Frameworks",
+  "difficulty": 6,
+  "estimatedHours": 4
+}
