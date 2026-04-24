@@ -1,0 +1,115 @@
+[
+    {
+        "id": "96eae09ed63c54b2",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "db8091c84328844e",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.emqx.io",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "58c49fb72d29e895",
+        "type": "mqtt in",
+        "z": "96eae09ed63c54b2",
+        "name": "",
+        "topic": "edu/iot26fs101247/esp32/temperature",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "db8091c84328844e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "92eed4733f5d8ba1"
+            ]
+        ]
+    },
+    {
+        "id": "4e05160244370ed6",
+        "type": "mqtt in",
+        "z": "96eae09ed63c54b2",
+        "name": "",
+        "topic": "edu/iot26fs101247/esp32/humidity",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "db8091c84328844e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "eeb6f1d5d57dca4e"
+            ]
+        ]
+    },
+    {
+        "id": "92eed4733f5d8ba1",
+        "type": "debug",
+        "z": "96eae09ed63c54b2",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "eeb6f1d5d57dca4e",
+        "type": "debug",
+        "z": "96eae09ed63c54b2",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 480,
+        "y": 180,
+        "wires": []
+    }
+]

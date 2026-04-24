@@ -1,0 +1,54 @@
+[
+    {
+        "id": "58c49fb72d29e895",
+        "type": "mqtt in",
+        "z": "cc9e3833cabc401e",
+        "name": "",
+        "topic": "edu/iot26fs101247/esp32/temperature",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "db8091c84328844e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "9bc6e8622fe91d22"
+            ]
+        ]
+    },
+    {
+        "id": "db8091c84328844e",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.emqx.io",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]

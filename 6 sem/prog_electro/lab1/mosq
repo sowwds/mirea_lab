@@ -1,0 +1,2 @@
+mosquitto_sub -h broker.emqx.io -t "edu/iot26fs101247/esp32/temperature"
+mosquitto_sub -h broker.emqx.io -t "edu/iot26fs101247/esp32/humidity"

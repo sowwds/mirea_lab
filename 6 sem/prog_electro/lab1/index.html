@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MQTT Monitor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .status {
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      background: #e9ecef;
+      font-weight: bold;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    .value {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .topic {
+      color: #666;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .log {
+      margin-top: 30px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .log h3 {
+      margin-top: 0;
+    }
+
+    .log-entry {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .error {
+      color: #b00020;
+      font-weight: bold;
+    }
+
+    @media (max-width: 700px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Мониторинг данных ESP32 по MQTT</h1>
+
+    <div class="status" id="status">Статус: подключение...</div>
+
+    <div class="cards">
+      <div class="card">
+        <h2>Температура</h2>
+        <div class="value" id="tempValue">-- °C</div>
+        <div class="topic">Топик: edu/iot26fs101247/esp32/temperature</div>
+      </div>
+
+      <div class="card">
+        <h2>Влажность</h2>
+        <div class="value" id="humValue">-- %</div>
+        <div class="topic">Топик: edu/iot26fs101247/esp32/humidity</div>
+      </div>
+    </div>
+
+    <div class="log">
+      <h3>Журнал сообщений</h3>
+      <div id="logEntries"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <script>
+    const brokerUrl = "wss://broker.emqx.io:8084/mqtt";
+
+    const tempTopic = "edu/iot26fs102367/esp32/temperature";
+    const humTopic = "edu/iot26fs102367/esp32/humidity";
+
+    const statusEl = document.getElementById("status");
+    const tempValueEl = document.getElementById("tempValue");
+    const humValueEl = document.getElementById("humValue");
+    const logEntriesEl = document.getElementById("logEntries");
+
+    function addLog(message) {
+      const entry = document.createElement("div");
+      entry.className = "log-entry";
+      entry.textContent = new Date().toLocaleTimeString() + " — " + message;
+      logEntriesEl.prepend(entry);
+    }
+
+    const client = mqtt.connect(brokerUrl);
+
+    client.on("connect", () => {
+      statusEl.textContent = "Статус: подключено к MQTT-брокеру";
+      addLog("Подключение успешно");
+
+      client.subscribe(tempTopic, (err) => {
+        if (err) {
+          addLog("Ошибка подписки на температуру");
+        } else {
+          addLog("Подписка на топик температуры выполнена");
+        }
+      });
+
+      client.subscribe(humTopic, (err) => {
+        if (err) {
+          addLog("Ошибка подписки на влажность");
+        } else {
+          addLog("Подписка на топик влажности выполнена");
+        }
+      });
+    });
+
+    client.on("message", (topic, message) => {
+      const value = message.toString();
+
+      if (topic === tempTopic) {
+        tempValueEl.textContent = value + " °C";
+        addLog("Температура: " + value);
+      }
+
+      if (topic === humTopic) {
+        humValueEl.textContent = value + " %";
+        addLog("Влажность: " + value);
+      }
+    });
+
+    client.on("error", (err) => {
+      statusEl.innerHTML = '<span class="error">Статус: ошибка подключения</span>';
+      addLog("Ошибка: " + err.message);
+    });
+
+    client.on("reconnect", () => {
+      statusEl.textContent = "Статус: переподключение...";
+      addLog("Попытка переподключения");
+    });
+
+    client.on("close", () => {
+      statusEl.innerHTML = '<span class="error">Статус: соединение закрыто</span>';
+      addLog("Соединение закрыто");
+    });
+  </script>
+</body>
+</html>
