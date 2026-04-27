@@ -1,0 +1,14 @@
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/CatalogModule.deps.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/CatalogModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/CatalogModule.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/CatalogModule.csproj.AssemblyReference.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/CatalogModule.GeneratedMSBuildEditorConfig.editorconfig
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/CatalogModule.AssemblyInfoInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/CatalogModule.AssemblyInfo.cs
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/CatalogModule.csproj.CoreCompileInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/CatalogModule.sourcelink.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/CatalogModule.csproj.CopyComplete
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/CatalogModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/refint/CatalogModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/CatalogModule.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CatalogModule/obj/Debug/net8.0/ref/CatalogModule.dll

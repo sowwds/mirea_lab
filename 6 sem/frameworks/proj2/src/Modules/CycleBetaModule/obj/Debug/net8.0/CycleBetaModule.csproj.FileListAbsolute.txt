@@ -1,0 +1,14 @@
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/CycleBetaModule.deps.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/CycleBetaModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/CycleBetaModule.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/CycleBetaModule.csproj.AssemblyReference.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/CycleBetaModule.GeneratedMSBuildEditorConfig.editorconfig
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/CycleBetaModule.AssemblyInfoInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/CycleBetaModule.AssemblyInfo.cs
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/CycleBetaModule.csproj.CoreCompileInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/CycleBetaModule.sourcelink.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/CycleBetaModule.csproj.CopyComplete
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/CycleBetaModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/refint/CycleBetaModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/CycleBetaModule.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/CycleBetaModule/obj/Debug/net8.0/ref/CycleBetaModule.dll

@@ -1,0 +1,14 @@
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/ExportModule.deps.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/ExportModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/ExportModule.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ExportModule.csproj.AssemblyReference.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ExportModule.GeneratedMSBuildEditorConfig.editorconfig
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ExportModule.AssemblyInfoInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ExportModule.AssemblyInfo.cs
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ExportModule.csproj.CoreCompileInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ExportModule.sourcelink.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ExportModule.csproj.CopyComplete
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ExportModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/refint/ExportModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ExportModule.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ExportModule/obj/Debug/net8.0/ref/ExportModule.dll

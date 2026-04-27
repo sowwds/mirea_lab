@@ -33,3 +33,14 @@
 /home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/obj/Debug/net8.0/ref/proj1.dll
 /home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/obj/Proj1.Tests.csproj.nuget.dgspec.json
 /home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/obj/project.assets.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/bin/Debug/net8.0/appsettings.Development.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/bin/Debug/net8.0/appsettings.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/bin/Debug/net8.0/MvcTestingAppManifest.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/bin/Debug/net8.0/proj1.deps.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/bin/Debug/net8.0/proj1.runtimeconfig.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/bin/Debug/net8.0/Proj1.Tests.deps.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/bin/Debug/net8.0/Proj1.Tests.runtimeconfig.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/bin/Debug/net8.0/tests/Proj1.Tests/obj/Proj1.Tests.csproj.nuget.dgspec.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/bin/Debug/net8.0/tests/Proj1.Tests/obj/project.assets.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/obj/Debug/net8.0/MvcTestingAppManifest.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj1/bin/Debug/net8.0/tests/Proj1.Tests/obj/Debug/net8.0/Proj1.Tests.sourcelink.json

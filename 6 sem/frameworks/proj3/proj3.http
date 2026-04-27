@@ -1,0 +1,11 @@
+@proj3_HostAddress = http://localhost:5081
+
+GET {{proj3_HostAddress}}/api/items
+Origin: http://localhost:3000
+Accept: application/json
+
+###
+
+GET {{proj3_HostAddress}}/api/items
+Origin: https://evil.example
+Accept: application/json

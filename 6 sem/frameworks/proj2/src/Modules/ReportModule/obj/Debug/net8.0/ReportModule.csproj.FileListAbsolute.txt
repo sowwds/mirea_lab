@@ -1,0 +1,14 @@
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/ReportModule.deps.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/ReportModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/modules/net8.0/ReportModule.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ReportModule.csproj.AssemblyReference.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ReportModule.GeneratedMSBuildEditorConfig.editorconfig
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ReportModule.AssemblyInfoInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ReportModule.AssemblyInfo.cs
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ReportModule.csproj.CoreCompileInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ReportModule.sourcelink.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ReportModule.csproj.CopyComplete
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ReportModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/refint/ReportModule.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ReportModule.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/Modules/ReportModule/obj/Debug/net8.0/ref/ReportModule.dll

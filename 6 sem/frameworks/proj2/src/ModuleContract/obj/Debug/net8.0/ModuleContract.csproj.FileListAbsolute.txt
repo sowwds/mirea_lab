@@ -1,0 +1,13 @@
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/bin/Debug/net8.0/ModuleContract.deps.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/bin/Debug/net8.0/ModuleContract.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/bin/Debug/net8.0/ModuleContract.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/ModuleContract.csproj.AssemblyReference.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/ModuleContract.GeneratedMSBuildEditorConfig.editorconfig
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/ModuleContract.AssemblyInfoInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/ModuleContract.AssemblyInfo.cs
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/ModuleContract.csproj.CoreCompileInputs.cache
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/ModuleContract.sourcelink.json
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/ModuleContract.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/refint/ModuleContract.dll
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/ModuleContract.pdb
+/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/obj/Debug/net8.0/ref/ModuleContract.dll

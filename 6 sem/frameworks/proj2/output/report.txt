@@ -1,0 +1,3 @@
+- Prepare module demo [Architecture] difficulty=6
+- Build middleware prototype [Frameworks] difficulty=5
+- Write dependency tests [Testing] difficulty=4

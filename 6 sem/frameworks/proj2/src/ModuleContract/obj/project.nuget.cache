@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "wuCMf0xVLNQwz94hcDzA7DVIQaUMi+UgVf2nPnsiVFdglgHmD4gtiXuMVDdMRNmT90YUssQQwojxTOQdbqPALg==",
+  "success": true,
+  "projectFilePath": "/home/aleksey/Documents/mirea_lab/6 sem/frameworks/proj2/src/ModuleContract/ModuleContract.csproj",
+  "expectedPackageFiles": [
+    "/home/aleksey/.nuget/packages/microsoft.extensions.configuration.abstractions/8.0.0/microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "/home/aleksey/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.2/microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+    "/home/aleksey/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/home/aleksey/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512"
+  ],
+  "logs": []
+}

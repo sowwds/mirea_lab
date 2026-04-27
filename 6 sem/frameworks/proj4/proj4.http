@@ -1,0 +1,54 @@
+@proj4_HostAddress = http://localhost:5090
+
+POST {{proj4_HostAddress}}/api/bookings/events
+Content-Type: application/json
+X-Correlation-Id: corr-001
+
+{
+  "processKey": "room-101:2026-04-24T18:00",
+  "idempotencyKey": "evt-1",
+  "eventType": "StartBooking",
+  "simulateFailure": false
+}
+
+###
+
+POST {{proj4_HostAddress}}/api/bookings/events
+Content-Type: application/json
+X-Correlation-Id: corr-002
+
+{
+  "processKey": "room-101:2026-04-24T18:00",
+  "idempotencyKey": "evt-2",
+  "eventType": "ReserveRoom",
+  "simulateFailure": false
+}
+
+###
+
+POST {{proj4_HostAddress}}/api/bookings/events
+Content-Type: application/json
+X-Correlation-Id: corr-003
+
+{
+  "processKey": "room-101:2026-04-24T18:00",
+  "idempotencyKey": "evt-3",
+  "eventType": "SendNotification",
+  "simulateFailure": true
+}
+
+###
+
+GET {{proj4_HostAddress}}/api/bookings/room-101:2026-04-24T18:00
+
+###
+
+GET {{proj4_HostAddress}}/health/live
+
+###
+
+GET {{proj4_HostAddress}}/health/ready
+
+###
+
+GET {{proj4_HostAddress}}/metrics-summary
