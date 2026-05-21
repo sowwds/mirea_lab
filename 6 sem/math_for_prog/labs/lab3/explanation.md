@@ -139,6 +139,115 @@ One-hot группа должна иметь ровно один активны�
 
 Генеративная модель выдает числа, а не готовые категории. Поэтому после генерации внутри каждой one-hot группы выбирается максимальное значение, оно становится 1, остальные становятся 0.
 
+### Общие функции в коде
+
+Перед самими генераторами в ноутбуке задаются списки признаков:
+
+```python
+processed_numeric_cols = ["age", "trestbps", "chol", "thalach", "oldpeak"]
+```
+
+Это числовые признаки, которые после первой лабораторной находятся в стандартизированном виде. Именно для них можно применять ограничение по квантилям.
+
+Дальше задается словарь one-hot групп:
+
+```python
+onehot_groups = {
+    "sex": ["sex_0.0", "sex_1.0"],
+    "cp": ["cp_1.0", "cp_2.0", "cp_3.0", "cp_4.0"],
+    ...
+}
+```
+
+Этот словарь нужен, чтобы после генерации восстановить корректную категорию. Например, группа `cp` описывает тип боли в груди. В одной строке должен быть активен только один столбец из этой группы.
+
+После этого формируются два списка:
+
+```python
+onehot_cols = [col for cols in onehot_groups.values() for col in cols]
+missing_indicator_cols = [col for col in feature_cols if col.endswith("_was_missing")]
+binary_cols = onehot_cols + missing_indicator_cols
+```
+
+`onehot_cols` содержит все one-hot признаки. `missing_indicator_cols` содержит индикаторы пропусков, которые были созданы в первой лабораторной. `binary_cols` объединяет обе группы, потому что они должны принимать значения 0 или 1.
+
+Границы для числовых признаков задаются так:
+
+```python
+numeric_clip_bounds = X_train[processed_numeric_cols].quantile([0.005, 0.995])
+```
+
+Это таблица нижних и верхних границ. Нижняя граница равна квантилю 0.005, верхняя - квантилю 0.995. Они используются в `postprocess_processed_features`.
+
+Функция `allocate_class_counts` распределяет нужное количество синтетических строк между классами:
+
+```python
+proportions = y_reference.value_counts(normalize=True).sort_index()
+raw_counts = proportions * n_rows
+counts = np.floor(raw_counts).astype(int)
+```
+
+Сначала считается доля каждого класса в reference-наборе. Потом эта доля умножается на нужное число строк. После округления вниз может потеряться несколько строк, поэтому остаток добавляется классам с наибольшей дробной частью:
+
+```python
+remainder = int(n_rows - counts.sum())
+fractional = (raw_counts - counts).sort_values(ascending=False)
+```
+
+Зачем это нужно: если мы генерируем 688 или 2064 строки, класс 0 и класс 1 должны сохранить тот же баланс, что и real train. Иначе качество модели могло бы измениться не из-за генератора, а из-за нового баланса классов.
+
+Функция `shuffle_frame` просто перемешивает строки:
+
+```python
+return frame.sample(frac=1, random_state=random_state).reset_index(drop=True)
+```
+
+Это нужно, чтобы после генерации сначала всех строк класса 0, потом всех строк класса 1 итоговая таблица не была отсортирована по target.
+
+Самая важная общая функция - `postprocess_processed_features`:
+
+```python
+synthetic = pd.DataFrame(values, columns=feature_cols).copy()
+```
+
+На вход она получает массив чисел от генератора и превращает его в таблицу с правильными названиями столбцов.
+
+Для числовых признаков выполняется clip:
+
+```python
+synthetic[col] = synthetic[col].clip(low, high)
+```
+
+Если генератор сделал значение слишком маленьким, оно заменяется на нижнюю границу. Если слишком большим - на верхнюю. Это не делает данные идеальными, но убирает грубые выбросы.
+
+Для one-hot групп используется такая логика:
+
+```python
+chosen = synthetic[present_cols].to_numpy().argmax(axis=1)
+synthetic[present_cols] = 0.0
+synthetic.loc[chosen == pos, col] = 1.0
+```
+
+Сначала в каждой строке ищется столбец с максимальным значением внутри группы. Потом вся группа обнуляется, а выбранный столбец становится 1. Так из произвольных чисел получается корректная категория.
+
+Для индикаторов пропусков:
+
+```python
+synthetic[col] = (synthetic[col] >= 0.5).astype(float)
+```
+
+Если значение больше или равно 0.5, оно становится 1, иначе 0. Это обычное пороговое округление бинарного признака.
+
+Функция `attach_target_and_shuffle` объединяет части по классам:
+
+```python
+synthetic = pd.concat(parts, ignore_index=True)
+synthetic = shuffle_frame(synthetic, random_state=random_state)
+synthetic["target"] = synthetic["target"].astype(int)
+```
+
+Каждый генератор отдельно создает строки класса 0 и класса 1, а эта функция склеивает их, перемешивает и возвращает таблицу в едином формате.
+
 ## 7. Генератор 1: Gaussian Mixture Model
 
 Gaussian Mixture Model, или GMM, это классическая генеративная модель. Она считает, что данные можно описать смесью нескольких нормальных распределений.
@@ -169,6 +278,89 @@ GMM хорошо работает в processed-пространстве, пот�
 - Correlation MAE для x3 = 0.0448.
 
 Это означает, что средние, дисперсии и корреляции у GMM похожи на реальные данные. Но это не гарантирует лучший TSTR, потому что статистическая похожесть не всегда означает максимальную полезность для классификации.
+
+### GMM буквально по коду
+
+Функция генератора начинается так:
+
+```python
+def generate_gmm(X_reference, y_reference, n_rows, random_state=RANDOM_STATE):
+    counts = allocate_class_counts(y_reference, n_rows)
+    parts = []
+```
+
+`X_reference` - это real train без target. `y_reference` - целевой класс для real train. `n_rows` - сколько строк нужно сгенерировать. Сначала вызывается `allocate_class_counts`, чтобы понять, сколько строк нужно создать для класса 0 и сколько для класса 1.
+
+Дальше идет цикл по классам:
+
+```python
+for cls, count in counts.items():
+    X_cls = X_reference.loc[y_reference[y_reference == cls].index]
+```
+
+Здесь из train-набора выбираются только строки текущего класса. Если `cls = 0`, модель учится только на пациентах без болезни. Если `cls = 1`, только на пациентах с болезнью.
+
+Число компонент:
+
+```python
+n_components = min(6, max(1, len(X_cls) // 60))
+```
+
+Разберем формулу. `len(X_cls) // 60` означает примерно одну компоненту на 60 строк класса. `max(1, ...)` гарантирует, что компонент будет хотя бы одна. `min(6, ...)` ограничивает число компонент сверху. Это защита от слишком сложной GMM.
+
+Сама модель создается так:
+
+```python
+model = GaussianMixture(
+    n_components=n_components,
+    covariance_type="diag",
+    reg_covar=1e-4,
+    max_iter=500,
+    random_state=random_state + int(cls),
+)
+```
+
+`n_components` - число гауссовых компонент. `covariance_type="diag"` означает диагональную ковариационную матрицу. Проще говоря, внутри каждой компоненты модель не пытается хранить полную матрицу связей между всеми признаками. Это упрощает обучение и делает модель устойчивее на небольшом датасете.
+
+`reg_covar=1e-4` добавляет маленькую регуляризацию к ковариации. Это нужно, чтобы модель не получила численно неустойчивую компоненту с почти нулевой дисперсией. Без этого GMM может плохо обучаться, особенно если признаки частично бинарные.
+
+`max_iter=500` задает максимум итераций обучения. `random_state + int(cls)` делает генерацию воспроизводимой и при этом разной для классов 0 и 1.
+
+Обучение:
+
+```python
+model.fit(X_cls)
+```
+
+После этого модель знает распределение признаков внутри текущего класса.
+
+Сэмплирование:
+
+```python
+sampled_values, _ = model.sample(count)
+```
+
+`model.sample(count)` создает `count` новых строк. Второй возвращаемый объект - номера компонент, из которых были сэмплированы строки. В работе они не нужны, поэтому там стоит `_`.
+
+Постобработка:
+
+```python
+sampled = postprocess_processed_features(sampled_values)
+sampled["target"] = int(cls)
+parts.append(sampled)
+```
+
+GMM выдает просто числа. Поэтому сначала они приводятся к допустимому табличному виду: числовые признаки обрезаются по квантилям, one-hot группы исправляются, бинарные признаки округляются. Потом добавляется target текущего класса.
+
+Финальная строка:
+
+```python
+return attach_target_and_shuffle(parts, random_state=random_state + 10)
+```
+
+Она склеивает строки обоих классов и перемешивает их.
+
+Главная идея кода GMM: модель отдельно оценивает распределение каждого класса и затем создает новые processed-строки из этого распределения.
 
 ## 8. Генератор 2: нейронный denoising-autoencoder
 
@@ -217,6 +409,161 @@ F1 = 0.8594
 
 При этом DCR median у Neural DAE около 0.36, что ниже, чем у GMM и экспертных правил. Это значит, что часть синтетических строк находится ближе к реальным train-строкам. Иными словами, Neural DAE дает очень полезные для модели данные, но они менее “новые” по расстоянию до train-набора.
 
+### Neural DAE буквально по коду
+
+Функция начинается так:
+
+```python
+def generate_neural_autoencoder(X_reference, y_reference, n_rows, random_state=RANDOM_STATE):
+    rng = np.random.default_rng(random_state)
+    counts = allocate_class_counts(y_reference, n_rows)
+    parts = []
+```
+
+`rng` - генератор случайных чисел NumPy. Он используется для шума и случайного выбора строк. Как и в GMM, `counts` задает, сколько строк нужно создать для каждого класса.
+
+Цикл по классам:
+
+```python
+for cls, count in counts.items():
+    X_cls = X_reference.loc[y_reference[y_reference == cls].index].reset_index(drop=True)
+    X_cls_values = X_cls.to_numpy(dtype=float)
+```
+
+Берутся строки только одного класса. Потом DataFrame переводится в NumPy-массив, потому что `MLPRegressor` работает с числовой матрицей.
+
+Дальше считается стандартное отклонение по каждому признаку:
+
+```python
+feature_std = X_cls.std(axis=0).replace(0, 1e-3).to_numpy(dtype=float)
+```
+
+Это нужно для масштаба шума. Если у признака большой разброс, шум для него может быть больше. Если разброс маленький, шум меньше. `replace(0, 1e-3)` нужен, чтобы не было нулевого масштаба шума для признаков, которые внутри класса почти не меняются.
+
+Создание обучающих пар:
+
+```python
+repeated = np.repeat(X_cls_values, repeats=4, axis=0)
+train_noise = rng.normal(0, feature_std * 0.08, size=repeated.shape)
+noisy_train = repeated + train_noise
+```
+
+Каждая реальная строка повторяется 4 раза. К повторенным строкам добавляется шум. Получается обучающая задача:
+
+```text
+вход: noisy_train
+цель: repeated
+```
+
+То есть нейросеть видит испорченную строку и должна восстановить исходную. Именно поэтому это denoising-autoencoder.
+
+Модель:
+
+```python
+model = MLPRegressor(
+    hidden_layer_sizes=(64, 24, 64),
+    activation="relu",
+    solver="adam",
+    alpha=0.001,
+    batch_size=64,
+    learning_rate_init=0.001,
+    max_iter=700,
+    early_stopping=True,
+    validation_fraction=0.15,
+    n_iter_no_change=30,
+    random_state=random_state + 100 + int(cls),
+)
+```
+
+`hidden_layer_sizes=(64, 24, 64)` задает архитектуру сети. Сначала идет слой 64 нейрона, потом узкий слой 24 нейрона, потом снова 64. Узкий слой заставляет сеть выделять компактное внутреннее представление данных.
+
+`activation="relu"` - функция активации. Она добавляет нелинейность, чтобы сеть могла описывать более сложные зависимости, чем линейная модель.
+
+`solver="adam"` - алгоритм оптимизации весов. Он обычно хорошо работает для MLP.
+
+`alpha=0.001` - регуляризация. Она штрафует слишком большие веса и снижает риск переобучения.
+
+`batch_size=64` - число строк в одном мини-батче при обучении.
+
+`learning_rate_init=0.001` - начальный шаг обучения.
+
+`max_iter=700` - максимум эпох обучения.
+
+`early_stopping=True` включает раннюю остановку. Часть данных откладывается как validation-набор:
+
+```python
+validation_fraction=0.15
+```
+
+Если качество на validation не улучшается 30 итераций:
+
+```python
+n_iter_no_change=30
+```
+
+обучение останавливается. Это защита от переобучения.
+
+Обучение:
+
+```python
+model.fit(noisy_train, repeated)
+```
+
+Модель учится восстанавливать чистую строку из зашумленной.
+
+Генерация начинается с выбора seed-строк:
+
+```python
+seed_rows = X_cls.sample(
+    n=count,
+    replace=True,
+    random_state=random_state + 200 + int(cls),
+).to_numpy(dtype=float)
+```
+
+Здесь реальные строки класса выбираются с возвращением. С возвращением означает, что одна и та же строка может быть выбрана несколько раз. Это нужно, потому что мы можем генерировать больше строк, чем было в исходном классе.
+
+К seed-строкам добавляется более сильный шум:
+
+```python
+generation_noise = rng.normal(0, feature_std * 0.18, size=seed_rows.shape)
+noisy_samples = seed_rows + generation_noise
+```
+
+Для обучения шум был `0.08 * std`, для генерации используется `0.18 * std`. Генерационный шум больше, потому что нужно получить новые варианты строк, а не почти точные копии.
+
+Реконструкция:
+
+```python
+reconstructed = model.predict(noisy_samples)
+```
+
+Зашумленные строки проходят через нейросеть, и она возвращает их к области, похожей на real train.
+
+Смешивание реконструкции и зашумленного входа:
+
+```python
+sampled_values = 0.85 * reconstructed + 0.15 * noisy_samples
+```
+
+Это важная деталь. Если взять только `reconstructed`, сеть может слишком сгладить строки. Если взять только `noisy_samples`, будет слишком много случайного шума. Смешивание 85 процентов реконструкции и 15 процентов зашумленного входа оставляет данные реалистичными, но немного разнообразит их.
+
+Дальше снова идет постобработка:
+
+```python
+sampled = postprocess_processed_features(sampled_values)
+sampled["target"] = int(cls)
+parts.append(sampled)
+```
+
+И финальное объединение:
+
+```python
+return attach_target_and_shuffle(parts, random_state=random_state + 20)
+```
+
+Главная идея Neural DAE в коде: взять реальные строки, научить сеть убирать шум, потом сгенерировать новые зашумленные варианты и вернуть их к выученной структуре данных.
+
 ## 9. Генератор 3: экспертная база правил
 
 Экспертный генератор отличается от GMM и Neural DAE. Он не обучает математическую модель распределения processed-признаков. Вместо этого он создает строки в исходном медицинском пространстве по правилам.
@@ -256,6 +603,535 @@ F1 = 0.8594
 ```
 
 Сильная сторона экспертного генератора в том, что он интерпретируемый и контролируемый. Кроме того, DCR median около 1.95. Это значит, что его строки дальше от реальных train-строк, то есть он меньше похож на простое копирование реальных записей. Поэтому экспертные правила полезны не только как генератор, но и как способ проверки предметной логики синтетических данных.
+
+### Expert Rules буквально по коду
+
+Перед основным генератором определены три вспомогательные функции.
+
+Первая функция:
+
+```python
+def _sample_from_distribution(rng, values, size, noise=0.0, low=None, high=None):
+```
+
+Она берет реальные значения признака, удаляет пропуски и случайно выбирает из них `size` значений:
+
+```python
+sampled = rng.choice(clean_values.to_numpy(), size=size, replace=True)
+```
+
+Если указан шум, он добавляется:
+
+```python
+sampled = sampled + rng.normal(0, noise, size=size)
+```
+
+Если заданы нижняя и верхняя границы, значения обрезаются:
+
+```python
+sampled = np.clip(sampled, low, high)
+```
+
+Эта функция используется, например, для возраста. Возраст берется из реального распределения своего класса, но слегка изменяется шумом.
+
+Вторая функция:
+
+```python
+def _sample_categorical(rng, frame, col, cls, size, fallback_values):
+```
+
+Она сэмплирует категориальный признак по частотам в реальных данных выбранного класса. Например, если у пациентов с болезнью чаще встречается определенный тип ЭКГ, это будет отражено в вероятностях.
+
+Код:
+
+```python
+values = frame.loc[frame["target"] == cls, col].dropna()
+probs = values.value_counts(normalize=True).sort_index()
+return rng.choice(probs.index.to_numpy(dtype=float), size=size, replace=True, p=probs.to_numpy())
+```
+
+Если данных по признаку нет, используются fallback-значения.
+
+Третья функция:
+
+```python
+def _choice_with_probs(rng, values, probs, size):
+```
+
+Она выбирает значения из заданного списка по заданным вероятностям. Например, для класса болезни можно явно задать, что `cp=4` встречается чаще.
+
+Основная функция начинается так:
+
+```python
+def generate_expert_rules(raw_reference, n_rows, random_state=RANDOM_STATE):
+    rng = np.random.default_rng(random_state)
+    counts = allocate_class_counts(raw_reference["target"], n_rows)
+    rows = []
+```
+
+В отличие от GMM и Neural DAE, здесь входом является `raw_reference`, то есть таблица в исходном медицинском пространстве. Это позволяет задавать правила в понятных признаках.
+
+Сначала считаются распределения источников и тяжести болезни:
+
+```python
+source_probs = raw_reference["source"].value_counts(normalize=True)
+severity_probs = raw_reference.loc[raw_reference["target"] == 1, "num"].value_counts(normalize=True).sort_index()
+```
+
+`source_probs` нужен, чтобы синтетические строки сохраняли распределение медицинских источников. `severity_probs` нужен, чтобы для больных пациентов значения `num` не всегда были одинаковыми, а повторяли распределение степеней болезни.
+
+Дальше идет цикл по классам:
+
+```python
+for cls, count in counts.items():
+    cls_frame = raw_reference[raw_reference["target"] == cls]
+```
+
+Для каждого класса генерируется свой набор строк.
+
+Возраст:
+
+```python
+age = _sample_from_distribution(
+    rng,
+    cls_frame["age"],
+    count,
+    noise=2.0,
+    low=float(raw_reference["age"].quantile(0.01)),
+    high=float(raw_reference["age"].quantile(0.99)),
+)
+```
+
+Возраст выбирается из реальных возрастов пациентов текущего класса. Добавляется шум со стандартным отклонением 2 года. Потом возраст ограничивается по 1 и 99 процентам реального распределения, чтобы не возникали неправдоподобные значения.
+
+Пол:
+
+```python
+sex = _sample_categorical(rng, raw_reference, "sex", cls, count, fallback_values=[0, 1])
+```
+
+Пол сэмплируется по реальным частотам класса.
+
+Тип боли в груди:
+
+```python
+if cls == 1:
+    cp = _choice_with_probs(rng, [1, 2, 3, 4], [0.06, 0.12, 0.20, 0.62], count)
+else:
+    cp = _choice_with_probs(rng, [1, 2, 3, 4], [0.12, 0.24, 0.32, 0.32], count)
+```
+
+Для класса болезни вероятность `cp=4` выше. Это отражает наблюдаемую связь: асимптоматический тип боли часто связан с наличием заболевания.
+
+Стенокардия при нагрузке:
+
+```python
+exang_prob = np.where(cls == 1, 0.42 + 0.16 * (cp == 4), 0.12 + 0.10 * (cp == 4))
+exang = (rng.random(count) < exang_prob).astype(float)
+```
+
+Вероятность `exang=1` выше для класса болезни. Если `cp=4`, вероятность дополнительно увеличивается. Это связывает признаки между собой, а не генерирует их независимо.
+
+Oldpeak:
+
+```python
+oldpeak = (
+    rng.gamma(shape=1.2 + 1.2 * cls, scale=0.42, size=count)
+    + 0.35 * exang
+    + 0.20 * (cp == 4)
+)
+```
+
+Здесь используется гамма-распределение, потому что `oldpeak` не обязан быть симметричным как нормальное распределение. У класса болезни параметр `shape` выше. Если есть стенокардия при нагрузке или `cp=4`, oldpeak дополнительно увеличивается.
+
+Потом oldpeak ограничивается:
+
+```python
+oldpeak = np.clip(oldpeak, 0, raw_reference["oldpeak"].dropna().quantile(0.995))
+```
+
+Максимальная ЧСС:
+
+```python
+thalach = 205 - 0.92 * age - 10 * cls - 7 * exang + rng.normal(0, 13, size=count)
+```
+
+Здесь заложена логика: чем выше возраст, тем ниже максимальная ЧСС. При болезни и стенокардии при нагрузке она дополнительно ниже. Потом добавляется нормальный шум, потому что реальные пациенты не лежат точно на одной линии.
+
+Давление:
+
+```python
+trestbps = 105 + 0.42 * age + 5 * cls + rng.normal(0, 13, size=count)
+```
+
+Давление растет с возрастом, немного выше при наличии болезни и имеет шум.
+
+Холестерин:
+
+```python
+chol = 165 + 1.05 * age + 10 * sex + 8 * cls + rng.normal(0, 42, size=count)
+```
+
+Холестерин зависит от возраста, пола и класса. Шум здесь больше, потому что холестерин в реальных данных имеет заметный разброс.
+
+Сахар натощак:
+
+```python
+fbs_prob = np.clip(0.08 + 0.0025 * (age - 45) + 0.035 * cls, 0.03, 0.30)
+fbs = (rng.random(count) < fbs_prob).astype(float)
+```
+
+Вероятность `fbs=1` растет с возрастом и немного выше при болезни. `np.clip` ограничивает вероятность от 0.03 до 0.30, чтобы она не стала отрицательной или слишком большой.
+
+ЭКГ:
+
+```python
+restecg = _sample_categorical(rng, raw_reference, "restecg", cls, count, fallback_values=[0, 1, 2])
+```
+
+ЭКГ сэмплируется по реальным частотам класса.
+
+Slope:
+
+```python
+if oldpeak[i] > 2.0 or (cls == 1 and exang[i] == 1):
+    slope[i] = _choice_with_probs(rng, [1, 2, 3], [0.16, 0.58, 0.26], 1)[0]
+elif cls == 0 and oldpeak[i] < 0.8:
+    slope[i] = _choice_with_probs(rng, [1, 2, 3], [0.46, 0.46, 0.08], 1)[0]
+else:
+    slope[i] = _choice_with_probs(rng, [1, 2, 3], [0.28, 0.56, 0.16], 1)[0]
+```
+
+Этот блок показывает преимущество экспертных правил: можно явно связать `slope` с `oldpeak`, классом и `exang`. Если oldpeak высокий или есть болезнь со стенокардией, вероятности категорий slope меняются.
+
+Thal:
+
+```python
+if cls == 1:
+    thal = _choice_with_probs(rng, [3, 6, 7], [0.38, 0.10, 0.52], count)
+else:
+    thal = _choice_with_probs(rng, [3, 6, 7], [0.74, 0.08, 0.18], count)
+```
+
+Для класса болезни чаще выбирается `thal=7`, для класса без болезни чаще `thal=3`.
+
+Исходная переменная `num`:
+
+```python
+if cls == 1 and not severity_probs.empty:
+    num = rng.choice(severity_probs.index.to_numpy(dtype=int), size=count, replace=True, p=severity_probs.to_numpy())
+else:
+    num = np.zeros(count, dtype=int)
+```
+
+Если класс 1, `num` выбирается по реальному распределению значений 1, 2, 3, 4. Если класс 0, `num=0`.
+
+Источник:
+
+```python
+source = rng.choice(source_probs.index.to_numpy(), size=count, replace=True, p=source_probs.to_numpy())
+```
+
+Источник выбирается по реальным долям источников.
+
+После генерации создается DataFrame:
+
+```python
+part = pd.DataFrame({...})
+```
+
+Затем добавляются пропуски:
+
+```python
+for col in cols_with_missing:
+    miss_prob = cls_frame[col].isna().mean()
+    miss_mask = rng.random(count) < miss_prob
+    part.loc[miss_mask, col] = np.nan
+```
+
+Для каждого признака с пропусками считается вероятность пропуска внутри текущего класса. Потом по этой вероятности часть синтетических значений заменяется на NaN.
+
+После объединения строк создаются индикаторы пропусков:
+
+```python
+synthetic_raw[f"{col}_was_missing"] = synthetic_raw[col].isna().astype(int)
+```
+
+Затем применяется препроцессор из первой лабораторной:
+
+```python
+synthetic_processed = preprocessor.transform(synthetic_raw[model_features + indicator_features])
+```
+
+Это переводит исходные медицинские строки в тот же processed-формат, что и real train.
+
+Главная идея экспертного генератора в коде: не моделировать всю таблицу одной математической моделью, а явно задать клинически осмысленные зависимости между признаками, потом привести результат к формату первой лабораторной.
+
+## 9.1. Как создаются все синтетические наборы
+
+После описания трех генераторов создается словарь:
+
+```python
+generator_functions = {
+    "GMM": lambda n, seed: generate_gmm(X_train, y_train, n, random_state=seed),
+    "Neural DAE": lambda n, seed: generate_neural_autoencoder(X_train, y_train, n, random_state=seed),
+    "Expert Rules": lambda n, seed: generate_expert_rules(raw_train, n, random_state=seed),
+}
+```
+
+Ключ словаря - название генератора. Значение - функция, которая принимает количество строк и seed.
+
+Дальше идет двойной цикл:
+
+```python
+for generator_id, generator_fn in generator_functions.items():
+    for multiplier in [1, 3]:
+```
+
+Для каждого генератора создаются два размера:
+
+```python
+n_rows = len(X_train) * multiplier
+```
+
+Если `multiplier = 1`, создается 688 строк. Если `multiplier = 3`, создается 2064 строки.
+
+Генерация:
+
+```python
+synthetic = generator_fn(n_rows, RANDOM_STATE + multiplier * 100 + len(generator_id))
+```
+
+Seed зависит от множителя и названия генератора. Это делает результаты воспроизводимыми, но разными для разных наборов.
+
+Сохранение:
+
+```python
+path = save_synthetic_dataset(synthetic, generator_id, multiplier)
+```
+
+Каждый набор сохраняется в CSV:
+
+```text
+lab3_synthetic_gmm_x1.csv
+lab3_synthetic_gmm_x3.csv
+lab3_synthetic_neural_dae_x1.csv
+lab3_synthetic_neural_dae_x3.csv
+lab3_synthetic_expert_rules_x1.csv
+lab3_synthetic_expert_rules_x3.csv
+```
+
+Также собирается таблица `saved_datasets`, где фиксируются название генератора, размер, число строк, число объектов каждого класса и positive rate.
+
+## 9.2. Как считаются метрики качества синтетики
+
+Функция `count_invalid_onehot_rows` проверяет one-hot группы:
+
+```python
+group_sums = frame[cols].sum(axis=1)
+invalid += int((group_sums != 1).sum())
+```
+
+Если сумма внутри one-hot группы не равна 1, строка считается некорректной для этой группы. В итоговых данных таких строк 0.
+
+Функция `quality_metrics_for_dataset` сравнивает synthetic с real train.
+
+Сначала берутся признаки:
+
+```python
+real_X = X_train[feature_cols]
+syn_X = synthetic[feature_cols]
+```
+
+Корреляции:
+
+```python
+real_corr = real_X.corr(numeric_only=True).fillna(0)
+syn_corr = syn_X.corr(numeric_only=True).fillna(0)
+corr_diff = (real_corr - syn_corr).abs().to_numpy()
+```
+
+Считается абсолютная разница между корреляционными матрицами. Потом берется среднее по верхнему треугольнику матрицы:
+
+```python
+corr_diff[np.triu_indices_from(corr_diff, k=1)].mean()
+```
+
+Диагональ не нужна, потому что корреляция признака с самим собой всегда равна 1.
+
+DCR считается через nearest neighbors:
+
+```python
+nearest = NearestNeighbors(n_neighbors=1, metric="euclidean")
+nearest.fit(real_X)
+distances = nearest.kneighbors(syn_X, return_distance=True)[0].ravel()
+```
+
+Для каждой синтетической строки ищется ближайшая реальная train-строка по евклидову расстоянию. Потом сохраняются минимум и медиана расстояний.
+
+Ошибки средних:
+
+```python
+(real_X[processed_numeric_cols].mean() - syn_X[processed_numeric_cols].mean()).abs().mean()
+```
+
+Ошибки дисперсий:
+
+```python
+(real_X[processed_numeric_cols].var() - syn_X[processed_numeric_cols].var()).abs().mean()
+```
+
+Ошибки бинарных частот:
+
+```python
+(real_X[binary_cols].mean() - syn_X[binary_cols].mean()).abs().mean()
+```
+
+Для бинарного признака среднее равно доле единиц, поэтому эта метрика показывает отличие частот категорий и индикаторов пропусков.
+
+Все метрики сохраняются в:
+
+```text
+lab3_synthetic_quality_metrics.csv
+```
+
+## 9.3. Как работает TSTR-проверка в коде
+
+Для TSTR сначала задаются базовые модели:
+
+```python
+def make_base_models():
+    return {
+        "Logistic Regression": LogisticRegression(...),
+        "Random Forest": RandomForestClassifier(...),
+        "Gradient Boosting": GradientBoostingClassifier(...),
+    }
+```
+
+Параметры моделей повторяют логику второй лабораторной. Это нужно, чтобы сравнение было честным.
+
+Веса ансамбля:
+
+```python
+ENSEMBLE_WEIGHTS = {
+    "Logistic Regression": 5,
+    "Random Forest": 1,
+    "Gradient Boosting": 1,
+}
+```
+
+Логистическая регрессия получает больший вес. Это соответствует изменениям во второй лабораторной, где веса подбирались по качеству моделей.
+
+Функция `make_voting_estimators` создает список моделей для VotingClassifier:
+
+```python
+return [
+    ("logreg", clone(base_models["Logistic Regression"])),
+    ("rf", clone(base_models["Random Forest"])),
+    ("gb", clone(base_models["Gradient Boosting"])),
+]
+```
+
+`clone` нужен, чтобы каждая модель была новым независимым объектом, а не уже обученной копией.
+
+Функция `make_models` возвращает пять моделей:
+
+- Logistic Regression;
+- Random Forest;
+- Gradient Boosting;
+- Voting Ensemble;
+- Weighted Voting Ensemble.
+
+Обычный Voting Ensemble использует:
+
+```python
+voting="soft"
+```
+
+Это значит, что он усредняет вероятности моделей, а не только готовые классы.
+
+Weighted Voting Ensemble делает то же самое, но с весами:
+
+```python
+weights=weights
+```
+
+Основная TSTR-функция:
+
+```python
+def evaluate_tstr(train_frame, source_name, generator_id, multiplier):
+```
+
+Она принимает train-набор. Это может быть real train или один из synthetic-наборов. Test всегда остается реальным:
+
+```python
+X_test
+y_test
+```
+
+Внутри функция отделяет признаки и target:
+
+```python
+X_source = train_frame[feature_cols].astype(float)
+y_source = train_frame["target"].astype(int)
+```
+
+Потом каждая модель обучается на выбранном train:
+
+```python
+fitted = clone(model).fit(X_source, y_source)
+```
+
+И проверяется на real test:
+
+```python
+y_pred = fitted.predict(X_test)
+y_score = fitted.predict_proba(X_test)[:, 1]
+```
+
+`y_pred` нужен для Accuracy, Precision, Recall и F1. `y_score` нужен для ROC-AUC, потому что ROC-AUC считается по вероятностям класса 1.
+
+Метрики:
+
+```python
+accuracy_score(y_test, y_pred)
+precision_score(y_test, y_pred, zero_division=0)
+recall_score(y_test, y_pred, zero_division=0)
+f1_score(y_test, y_pred, zero_division=0)
+roc_auc_score(y_test, y_score)
+```
+
+`zero_division=0` защищает от ошибки, если модель вдруг не предсказала ни одного положительного объекта. В наших итоговых результатах это не стало проблемой, но параметр делает расчет устойчивым.
+
+Сначала TSTR считается для real train:
+
+```python
+tstr_rows.extend(evaluate_tstr(real_train_frame, "Real train", "Real", "x1"))
+```
+
+Это контрольный результат. Он показывает, какое качество получается при обучении на настоящих train-данных.
+
+Потом TSTR считается для каждого synthetic-набора:
+
+```python
+for (generator_id, multiplier), synthetic in synthetic_datasets.items():
+    tstr_rows.extend(evaluate_tstr(synthetic, ...))
+```
+
+После этого добавляются две сравнительные колонки:
+
+```python
+tstr_results["F1 > raw GB baseline"] = tstr_results["F1"] > RAW_GRADIENT_BOOSTING_F1_BASELINE
+tstr_results["F1 gap to lab2 best"] = tstr_results["F1"] - BEST_LAB2_PROCESSED_F1
+```
+
+Первая колонка показывает, прошел ли набор порог Gradient Boosting на сырых данных. Вторая показывает, насколько результат отличается от лучшей модели второй лабораторной на processed-данных.
+
+Результаты сохраняются в:
+
+```text
+lab3_tstr_metrics.csv
+```
 
 ## 10. Метрики статистической проверки
 
