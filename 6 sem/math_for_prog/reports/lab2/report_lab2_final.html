@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Практическая работа №2</title>
+  <style>
+    @page { size: A4; margin: 20mm 10mm 20mm 30mm; }
+    body {
+      font-family: "Times New Roman", serif;
+      font-size: 14pt;
+      line-height: 1.5;
+      color: #111;
+    }
+    h1, h2, h3, h4 {
+      font-family: "Times New Roman", serif;
+      font-weight: bold;
+      page-break-after: avoid;
+    }
+    h1 {
+      font-size: 18pt;
+      text-align: center;
+      text-transform: uppercase;
+      margin: 0 0 12pt 0;
+      page-break-before: always;
+    }
+    .title-page h1 { page-break-before: auto; text-transform: none; }
+    h2 {
+      font-size: 16pt;
+      text-align: justify;
+      margin: 24pt 0 12pt 0;
+    }
+    h3 {
+      font-size: 14pt;
+      text-align: justify;
+      margin: 24pt 0 12pt 0;
+    }
+    p {
+      text-align: justify;
+      text-indent: 1.25cm;
+      margin: 0;
+    }
+    ul, ol {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-left: 2.25cm;
+    }
+    li {
+      margin: 0;
+      text-align: justify;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 10pt 0;
+      font-size: 12pt;
+    }
+    th, td { border: 1px solid #333; padding: 5px 7px; vertical-align: top; }
+    th { font-weight: bold; text-align: center; }
+    code {
+      font-family: "Courier New", monospace;
+      font-size: 11pt;
+    }
+    pre {
+      font-family: "Courier New", monospace;
+      font-size: 9pt;
+      white-space: pre-wrap;
+      border: 1px solid #aaa;
+      padding: 9px;
+      background: #f7f7f7;
+    }
+    .title-page {
+      text-align: center;
+      page-break-after: always;
+    }
+    .title-page p {
+      text-align: center;
+      text-indent: 0;
+      margin: 0;
+      line-height: 1.5;
+    }
+    .title-spacer-large { height: 120pt; }
+    .title-spacer-medium { height: 60pt; }
+    .right-block {
+      text-align: right;
+      margin-left: 45%;
+    }
+    .right-block p { text-align: right; text-indent: 0; }
+    .figure {
+      text-align: center;
+      margin: 10pt 0;
+      page-break-inside: avoid;
+    }
+    .figure img {
+      max-width: 100%;
+      height: auto;
+    }
+    .caption {
+      text-align: center;
+      text-indent: 0;
+      font-style: italic;
+      font-size: 12pt;
+    }
+    .toc p { text-indent: 0; }
+    .no-indent { text-indent: 0; }
+  </style>
+</head>
+<body>
+  <section class="title-page">
+    <div>
+      <p style="text-align: center; text-indent: 0;">МИНОБРНАУКИ РОССИИ</p>
+      <p style="text-align: center; text-indent: 0;">Федеральное государственное бюджетное образовательное учреждение высшего образования «МИРЭА - Российский технологический университет»</p>
+      <p style="text-align: center; text-indent: 0;">РТУ МИРЭА</p>
+    </div>
+    <div class="title-spacer-large"></div>
+    <div>
+      <p style="text-align: center; text-indent: 0;">Практическая работа 2</p>
+      <p style="text-align: center; text-indent: 0;">Тема: Дискриминативные интеллектуальные алгоритмы</p>
+    </div>
+    <div class="title-spacer-medium"></div>
+    <div class="right-block">
+      <p style="text-align: right; text-indent: 0;">Выполнили: Ефремов А.И., Лазарев Г.С., Никитин А.В.</p>
+      <p style="text-align: right; text-indent: 0;">Принял: Холмогоров В.В.</p>
+    </div>
+    <div class="title-spacer-large"></div>
+    <div>
+      <p style="text-align: center; text-indent: 0;">Москва</p>
+      <p style="text-align: center; text-indent: 0;">2026 г.</p>
+    </div>
+  </section>
+  <h1>Содержание</h1>
+<p>Введение</p>
+<ol>
+<li>Теоретическая часть</li>
+</ol>
+<p>1.1. Описание задачи и входных данных 1.2. Дискриминативная классификация 1.3. Логистическая регрессия 1.4. Случайный лес 1.5. Градиентный бустинг 1.6. Ансамбль голосования 1.7. Метрики качества</p>
+<ol>
+<li>Практическая часть</li>
+</ol>
+<p>2.1. Используемые модели и параметры 2.2. Анализ признаков перед обучением 2.3. Протокол обучения и оценки 2.4. Сравнение моделей 2.5. Матрицы ошибок Заключение Список использованных источников Приложение А</p>
+<h1>Введение</h1>
+<p>Цель работы — реализовать и сравнить несколько дискриминативных моделей машинного обучения для бинарной классификации наличия сердечно-сосудистого заболевания у пациента.</p>
+<p>В первой практической работе был подготовлен набор данных UCI Heart Disease. Во второй работе этот подготовленный набор используется как вход для моделей. Подробная предобработка здесь повторно не рассматривается, потому что она уже была основной темой первой лабораторной. Основной акцент второй работы — сравнение алгоритмов классификации и объяснение того, почему разные модели дают разные результаты.</p>
+<p>Актуальность работы связана с тем, что сердечно-сосудистые заболевания остаются одной из ведущих причин смертности в мире [1]. С точки зрения машинного обучения задача также показательна: медицинские признаки не разделяют классы идеально, поэтому полезно сравнить простую линейную модель, модели на деревьях и ансамбли.</p>
+<p>В работе обучаются пять вариантов:</p>
+<ul>
+<li>Logistic Regression — базовая линейная модель;</li>
+<li>Random Forest — бэггинг-ансамбль деревьев решений;</li>
+<li>Gradient Boosting — бустинговый ансамбль деревьев;</li>
+<li>Voting Ensemble — обычное голосование трёх моделей;</li>
+<li>Weighted Voting Ensemble — голосование с весами, выбранными по F1 на кросс-валидации.</li>
+</ul>
+<h1>1. Теоретическая часть</h1>
+<h2>1.1. Описание задачи и входных данных</h2>
+<p>Используется набор данных <strong>UCI Heart Disease</strong> [2]. В нём каждая строка соответствует пациенту, а столбцы описывают медицинские признаки: возраст, пол, тип боли в груди, давление, холестерин, результаты ЭКГ, максимальную ЧСС, стенокардию при нагрузке, oldpeak, slope, thal и другие признаки.</p>
+<p>Исходная целевая переменная num принимает значения от 0 до 4. Для второй лабораторной она переводится в бинарный вид:</p>
+<pre><code>target = 0, если num = 0
+target = 1, если num &gt; 0</code></pre>
+<p>То есть модель должна ответить на вопрос: есть у пациента признаки болезни сердца или нет.</p>
+<p>После подготовки из первой лабораторной используется 918 строк. Классы распределены достаточно близко: 410 объектов класса «нет болезни» и 508 объектов класса «есть болезнь». Дисбаланс есть, но он не критический.</p>
+<h2>1.2. Дискриминативная классификация</h2>
+<p>Дискриминативная модель не создаёт новые объекты, а учится отличать один класс от другого. В данной работе модель получает признаки пациента и возвращает:</p>
+<ul>
+<li>класс 0 — болезни нет;</li>
+<li>класс 1 — болезнь есть;</li>
+<li>для некоторых моделей также вероятность класса 1.</li>
+</ul>
+<p>Вероятность важна для двух вещей. Во-первых, по ней считается ROC-AUC. Во-вторых, она используется в soft-voting ансамблях, где модели голосуют не только готовыми классами, а вероятностями.</p>
+<h2>1.3. Логистическая регрессия</h2>
+<p>Логистическая регрессия — это базовая линейная модель классификации [3]. Она считает взвешенную сумму признаков:</p>
+<pre><code>z = w1·x1 + w2·x2 + ... + wn·xn + b</code></pre>
+<p>где x1...xn — признаки пациента, w1...wn — веса признаков, b — свободный коэффициент.</p>
+<p>Затем значение z переводится в вероятность через логистическую функцию:</p>
+<pre><code>p = 1 / (1 + e^(-z))</code></pre>
+<p>Если вероятность выше выбранного порога, объект относится к классу 1.</p>
+<p>Почему эта модель нужна в работе:</p>
+<ul>
+<li>она простая и понятная;</li>
+<li>хорошо подходит как базовый уровень качества;</li>
+<li>показывает, насколько хорошо классы разделяются линейно.</li>
+</ul>
+<p>Ограничение логистической регрессии в том, что она строит линейную границу. Если болезнь зависит от сложного сочетания признаков, например возраста, типа боли, oldpeak и максимальной ЧСС одновременно, линейной границы может быть недостаточно.</p>
+<p>В коде используется:</p>
+<pre><code>LogisticRegression(
+    max_iter=5000,
+    class_weight=&quot;balanced&quot;,
+    random_state=42,
+)</code></pre>
+<p>max_iter=5000 нужен, чтобы алгоритму хватило итераций для сходимости. После one-hot encoding признаков становится больше, поэтому стандартного числа итераций может быть мало.</p>
+<p>class_weight=&quot;balanced&quot; означает, что модель учитывает различие в размерах классов. Класс «есть болезнь» представлен немного чаще, поэтому балансировка весов помогает не смещаться слишком сильно в сторону более частого класса.</p>
+<h2>1.4. Случайный лес</h2>
+<p>Случайный лес (Random Forest) — это ансамбль деревьев решений [4]. Одно дерево решений строит набор правил вида:</p>
+<pre><code>если oldpeak &gt; 1.5 и thalach &lt; 140, то ...</code></pre>
+<p>Проблема одного дерева в том, что оно легко переобучается: может слишком точно подстроиться под обучающую выборку и хуже работать на новых данных.</p>
+<p>Случайный лес решает это так:</p>
+<ol>
+<li>строится много деревьев;</li>
+<li>каждое дерево получает немного разную выборку данных;</li>
+<li>при построении узлов деревья рассматривают не все признаки сразу, а случайные подмножества признаков;</li>
+<li>итоговый ответ получается голосованием деревьев.</li>
+</ol>
+<p>Такой подход называется бэггингом. Его смысл — уменьшить случайность и переобучение за счёт усреднения многих моделей.</p>
+<p>В работе используется:</p>
+<pre><code>RandomForestClassifier(
+    n_estimators=300,
+    min_samples_leaf=2,
+    class_weight=&quot;balanced&quot;,
+    random_state=42,
+    n_jobs=1,
+)</code></pre>
+<p>n_estimators=300 означает, что строится 300 деревьев. Это не случайное число «с потолка». Если деревьев мало, например 10 или 20, результат леса может сильно зависеть от случайности. При увеличении числа деревьев предсказания становятся стабильнее. 300 деревьев — нормальный компромисс: достаточно много для устойчивости, но ещё не слишком тяжело для небольшого учебного датасета.</p>
+<p>min_samples_leaf=2 означает, что в конечном листе дерева должно быть минимум 2 объекта. Лист — это конечное правило дерева, где уже выдаётся прогноз. Если разрешить лист из одного объекта, дерево может запоминать отдельные строки. Минимум 2 объекта немного сглаживает дерево и снижает переобучение. Это особенно важно для медицинских данных, где есть шум и похожие пациенты из разных классов.</p>
+<p>class_weight=&quot;balanced&quot; выполняет ту же роль, что и в логистической регрессии: учитывает неравное количество объектов разных классов.</p>
+<p>n_jobs=1 ограничивает выполнение одним процессом. На качество модели это не влияет, но делает запуск более предсказуемым в локальной среде.</p>
+<h2>1.5. Градиентный бустинг</h2>
+<p>Градиентный бустинг (Gradient Boosting) — это ансамбль деревьев, которые строятся последовательно [5]. Главное отличие от случайного леса:</p>
+<ul>
+<li>случайный лес строит деревья независимо;</li>
+<li>бустинг строит деревья одно за другим.</li>
+</ul>
+<p>Интуитивно бустинг работает так:</p>
+<ol>
+<li>первое дерево делает прогноз;</li>
+<li>алгоритм смотрит, где модель ошиблась;</li>
+<li>следующее дерево сильнее учитывает ошибки предыдущих;</li>
+<li>итоговый прогноз складывается из вкладов всех деревьев.</li>
+</ol>
+<p>То есть бустинг не просто усредняет деревья, а последовательно исправляет ошибки.</p>
+<p>В работе используется:</p>
+<pre><code>GradientBoostingClassifier(
+    n_estimators=150,
+    learning_rate=0.05,
+    max_depth=3,
+    random_state=42,
+)</code></pre>
+<p>n_estimators=150 означает, что строится 150 последовательных деревьев. Для бустинга нельзя просто бесконечно увеличивать число деревьев: слишком много деревьев может привести к переобучению. Поэтому используется умеренное значение.</p>
+<p>learning_rate=0.05 задаёт, насколько сильно каждое новое дерево влияет на итоговый ответ. Маленький шаг делает обучение осторожнее. Если поставить большой learning_rate, бустинг может слишком резко подстраиваться под ошибки и переобучаться. Значение 0.05 выбрано как аккуратный вариант: каждое дерево исправляет ошибки постепенно.</p>
+<p>max_depth=3 ограничивает глубину каждого дерева. Это значит, что каждое отдельное дерево остаётся простым. В бустинге это нормально: сила метода не в одном большом дереве, а в последовательности многих небольших деревьев. Если сделать деревья слишком глубокими, они начнут запоминать обучающие данные.</p>
+<h2>1.6. Ансамбль голосования</h2>
+<p>Ансамбль голосования (VotingClassifier) объединяет несколько уже выбранных моделей [6]. В работе объединяются:</p>
+<ul>
+<li>логистическая регрессия;</li>
+<li>случайный лес;</li>
+<li>градиентный бустинг.</li>
+</ul>
+<p>Используется voting=&quot;soft&quot;. Это значит, что ансамбль усредняет вероятности моделей.</p>
+<p>Пример:</p>
+<table>
+<tr><th>Модель</th><th>Вероятность болезни</th></tr>
+<tr><td>Logistic Regression</td><td>0.70</td></tr>
+<tr><td>Random Forest</td><td>0.55</td></tr>
+<tr><td>Gradient Boosting</td><td>0.80</td></tr>
+</table>
+<p>Обычный soft-voting посчитает среднюю вероятность:</p>
+<pre><code>(0.70 + 0.55 + 0.80) / 3 = 0.683</code></pre>
+<p>Если итоговая вероятность выше порога, ансамбль выдаёт класс «есть болезнь».</p>
+<p>В работе также используется взвешенное голосование. Веса выбираются по F1 на кросс-валидации обучающей выборки. Для подготовленных данных получились такие значения:</p>
+<table>
+<tr><th>Модель</th><th>CV F1</th><th>Вес</th></tr>
+<tr><td>Gradient Boosting</td><td>0.8140</td><td>1</td></tr>
+<tr><td>Logistic Regression</td><td>0.8208</td><td>2</td></tr>
+<tr><td>Random Forest</td><td>0.8263</td><td>3</td></tr>
+</table>
+<p>Это значит, что случайный лес получил самый большой вес, потому что на кросс-валидации train-части показал лучший F1 среди базовых моделей. Тестовая выборка при выборе весов не использовалась, поэтому сравнение остаётся честным.</p>
+<p>Важно: взвешенное голосование не обязано быть лучше обычного. Если модели близки по качеству, то равное усреднение может дать более ровный баланс ошибок. В этой работе так и получилось.</p>
+<h2>1.7. Метрики качества</h2>
+<p>Для оценки моделей используются Accuracy, Precision, Recall, F1 и ROC-AUC [7].</p>
+<p>Accuracy — доля правильных ответов:</p>
+<pre><code>Accuracy = (TP + TN) / (TP + TN + FP + FN)</code></pre>
+<p>Precision показывает, какая доля положительных предсказаний была верной:</p>
+<pre><code>Precision = TP / (TP + FP)</code></pre>
+<p>Recall показывает, какую долю реальных пациентов с болезнью модель нашла:</p>
+<pre><code>Recall = TP / (TP + FN)</code></pre>
+<p>F1 объединяет precision и recall:</p>
+<pre><code>F1 = 2 · Precision · Recall / (Precision + Recall)</code></pre>
+<p>ROC-AUC показывает, насколько хорошо модель ранжирует пациентов по вероятности болезни. Эта метрика смотрит не только на готовые классы, но и на вероятности.</p>
+<p>В медицинской задаче особенно важен Recall для класса «есть болезнь», потому что пропустить пациента с заболеванием опаснее, чем отправить пациента на дополнительную проверку. Но если смотреть только на recall, можно получить модель, которая почти всем ставит «есть болезнь». Поэтому основной показатель сравнения в работе — F1, потому что он учитывает и precision, и recall.</p>
+<h1>2. Практическая часть</h1>
+<h2>2.1. Используемые модели и параметры</h2>
+<p>В практической части обучались пять моделей. Все они проверялись на одном и том же train/test-разбиении подготовленного набора данных.</p>
+<table>
+<tr><th>Модель</th><th>Основные параметры</th><th>Зачем так выбрано</th></tr>
+<tr><td>Logistic Regression</td><td>max_iter=5000, class_weight=&quot;balanced&quot;</td><td>Базовая модель; увеличенное число итераций нужно для устойчивой сходимости</td></tr>
+<tr><td>Random Forest</td><td>n_estimators=300, min_samples_leaf=2, class_weight=&quot;balanced&quot;</td><td>300 деревьев стабилизируют голосование; минимум 2 объекта в листе снижает переобучение</td></tr>
+<tr><td>Gradient Boosting</td><td>n_estimators=150, learning_rate=0.05, max_depth=3</td><td>150 небольших деревьев последовательно исправляют ошибки; малый шаг делает обучение осторожнее</td></tr>
+<tr><td>Voting Ensemble</td><td>voting=&quot;soft&quot;</td><td>Усредняет вероятности трёх разных моделей</td></tr>
+<tr><td>Weighted Voting Ensemble</td><td>voting=&quot;soft&quot;, веса по CV F1</td><td>Даёт больший вклад модели, которая лучше показала себя на кросс-валидации</td></tr>
+</table>
+<p>Смысл такого набора моделей: сравнить три разных подхода. Логистическая регрессия проверяет линейную зависимость, случайный лес проверяет устойчивый ансамбль независимых деревьев, а бустинг проверяет последовательное исправление ошибок. Ансамбли затем объединяют эти подходы.</p>
+<h2>2.2. Анализ признаков перед обучением</h2>
+<p>В этой части не повторяется предобработка из первой лабораторной. Здесь анализируются признаки, чтобы понять, почему задача классификации не является совсем простой.</p>
+<div class="figure"><img src="../../assets/lab2_report/class_balance_by_source.png" alt="Рисунок 1 — Баланс классов по источникам"><p class="caption">Рисунок 1 — Баланс классов по источникам</p></div>
+<p>Рисунок 1 показывает, что источники данных отличаются по балансу классов. В Cleveland и Hungarian больше пациентов без болезни, а в Switzerland и Long Beach VA больше пациентов с болезнью. Это важно: модель учится на данных из разных медицинских учреждений, и распределение классов в них неодинаковое.</p>
+<p>Из-за этого нельзя ожидать идеального качества. Пациенты из разных источников могут отличаться не только диагнозом, но и способом сбора данных, полнотой признаков и составом выборки.</p>
+<div class="figure"><img src="../../assets/lab2_report/correlation_heatmap.png" alt="Рисунок 2 — Корреляции основных числовых признаков"><p class="caption">Рисунок 2 — Корреляции основных числовых признаков</p></div>
+<p>На рисунке 2 видно, что самые заметные связи с целевой переменной имеют:</p>
+<ul>
+<li>oldpeak: корреляция около 0.39;</li>
+<li>thalach: корреляция около -0.39;</li>
+<li>age: корреляция около 0.28.</li>
+</ul>
+<p>Это означает, что у пациентов с болезнью чаще выше oldpeak, ниже максимальная ЧСС и выше возраст. Но значения корреляций умеренные, не близкие к 1 или -1. Значит, ни один отдельный числовой признак не решает задачу сам по себе. Моделям нужно учитывать комбинацию признаков.</p>
+<div class="figure"><img src="../../assets/lab2_report/feature_analysis.png" alt="Рисунок 3 — Анализ отдельных признаков"><p class="caption">Рисунок 3 — Анализ отдельных признаков</p></div>
+<p>Первый график показывает, что пациенты с болезнью чаще находятся в более старших возрастах. Но распределения классов пересекаются, поэтому возраст не может быть единственным правилом.</p>
+<p>Второй график показывает связь возраста и thalach. У пациентов с болезнью чаще встречаются более низкие значения максимальной ЧСС. Это согласуется с корреляционной матрицей.</p>
+<p>Третий график показывает oldpeak по классам. У класса «есть болезнь» медиана oldpeak выше, но боксплоты пересекаются. Это объясняет, почему модели дают хороший, но не идеальный результат: признаки дают сигнал, но классы всё равно смешаны.</p>
+<h2>2.3. Протокол обучения и оценки</h2>
+<p>Для оценки использовался подготовленный набор из первой лабораторной:</p>
+<ul>
+<li>918 строк;</li>
+<li>688 строк в train;</li>
+<li>230 строк в test;</li>
+<li>стратифицированное разделение по целевому классу;</li>
+<li>random_state=42 для воспроизводимости.</li>
+</ul>
+<p>Стратификация нужна, чтобы в train и test сохранилось примерно одинаковое соотношение классов. Без этого тестовая выборка могла бы случайно получить слишком много или слишком мало пациентов с болезнью, и сравнение моделей стало бы менее честным.</p>
+<p>Взвешенный ансамбль использовал кросс-валидацию только на train-части. Это сделано для того, чтобы веса моделей не подбирались по тестовой выборке.</p>
+<h2>2.4. Сравнение моделей</h2>
+<p>Основные результаты на подготовленных данных:</p>
+<table>
+<tr><th>Модель</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>ROC-AUC</th></tr>
+<tr><td>Voting Ensemble</td><td>0.8565</td><td>0.8507</td><td>0.8976</td><td>0.8736</td><td>0.9139</td></tr>
+<tr><td>Weighted Voting Ensemble</td><td>0.8522</td><td>0.8550</td><td>0.8819</td><td>0.8682</td><td>0.9132</td></tr>
+<tr><td>Logistic Regression</td><td>0.8478</td><td>0.8538</td><td>0.8740</td><td>0.8638</td><td>0.9179</td></tr>
+<tr><td>Random Forest</td><td>0.8435</td><td>0.8473</td><td>0.8740</td><td>0.8605</td><td>0.9064</td></tr>
+<tr><td>Gradient Boosting</td><td>0.8304</td><td>0.8188</td><td>0.8898</td><td>0.8528</td><td>0.9028</td></tr>
+</table>
+<div class="figure"><img src="../../assets/lab2_report/f1_comparison.png" alt="Рисунок 4 — Сравнение моделей по F1-score"><p class="caption">Рисунок 4 — Сравнение моделей по F1-score</p></div>
+<p>На рисунке 4 нас интересуют значения для подготовленных данных. Лучший F1 получил Voting Ensemble: 0.8736. Это значит, что обычное усреднение вероятностей трёх моделей дало лучший баланс между precision и recall.</p>
+<p>Логистическая регрессия показала F1 0.8638. Это сильный результат для простой модели. Он говорит о том, что в данных есть заметный линейный сигнал: комбинация признаков действительно позволяет отделять пациентов с болезнью от пациентов без болезни.</p>
+<p>Случайный лес получил F1 0.8605, то есть почти как логистическая регрессия. Он не стал заметно лучше, хотя умеет ловить нелинейные зависимости. Возможное объяснение: в этом датасете часть полезного сигнала хорошо выражена линейно, а сам набор не очень большой для сложных деревьев.</p>
+<p>Градиентный бустинг получил F1 0.8528. При этом у него высокий recall 0.8898, то есть он хорошо находит пациентов с болезнью. Но precision ниже (0.8188), значит бустинг чаще относит пациентов без болезни к положительному классу. Поэтому итоговый F1 ниже, чем у ансамбля голосования.</p>
+<p>Взвешенное голосование получило F1 0.8682, то есть немного хуже обычного Voting Ensemble. Это нормально: веса были выбраны по кросс-валидации train-части, а на test-части простое равное усреднение оказалось лучше. Это показывает, что усложнение ансамбля не всегда улучшает качество.</p>
+<div class="figure"><img src="../../assets/lab2_report/roc_auc_comparison.png" alt="Рисунок 5 — Сравнение моделей по ROC-AUC"><p class="caption">Рисунок 5 — Сравнение моделей по ROC-AUC</p></div>
+<p>На рисунке 5 видно, что ROC-AUC у всех моделей находится примерно в диапазоне 0.90-0.92. Это означает, что модели в целом хорошо ранжируют пациентов: пациентам с заболеванием обычно назначается более высокая вероятность класса 1.</p>
+<p>Интересно, что максимальный ROC-AUC среди подготовленных моделей у логистической регрессии: 0.9179, но лучший F1 у Voting Ensemble. Это не ошибка. ROC-AUC оценивает вероятностное ранжирование, а F1 оценивает уже итоговые классы при конкретном пороге. Для практической классификации в этой работе важнее F1, потому что он показывает баланс между ложными срабатываниями и пропущенными пациентами с болезнью.</p>
+<h2>2.5. Матрицы ошибок</h2>
+<div class="figure"><img src="../../assets/lab2_report/confusion_matrices.png" alt="Рисунок 6 — Матрицы ошибок моделей на подготовленных данных"><p class="caption">Рисунок 6 — Матрицы ошибок моделей на подготовленных данных</p></div>
+<p>Матрицы ошибок показывают, какие именно ошибки делают модели.</p>
+<table>
+<tr><th>Модель</th><th>Верно: нет болезни</th><th>Ошибочно: есть болезнь</th><th>Ошибочно: нет болезни</th><th>Верно: есть болезнь</th></tr>
+<tr><td>Logistic Regression</td><td>84</td><td>19</td><td>16</td><td>111</td></tr>
+<tr><td>Random Forest</td><td>83</td><td>20</td><td>16</td><td>111</td></tr>
+<tr><td>Gradient Boosting</td><td>78</td><td>25</td><td>14</td><td>113</td></tr>
+<tr><td>Voting Ensemble</td><td>83</td><td>20</td><td>13</td><td>114</td></tr>
+<tr><td>Weighted Voting Ensemble</td><td>84</td><td>19</td><td>15</td><td>112</td></tr>
+</table>
+<p>Voting Ensemble сделал меньше всего ложноотрицательных ошибок: 13. Это значит, что он реже остальных пропускал пациентов с болезнью. Для медицинской задачи это важное преимущество.</p>
+<p>Gradient Boosting нашёл 113 пациентов с болезнью из 127, но при этом дал 25 ложноположительных ошибок. То есть он более “осторожный” в сторону болезни: чаще говорит «есть болезнь», из-за чего recall высокий, но precision ниже.</p>
+<p>Logistic Regression и Random Forest дали очень похожие матрицы ошибок. Это объясняет близость их F1. Несмотря на разные принципы работы, на данном наборе они пришли к похожему балансу ошибок.</p>
+<p>Weighted Voting Ensemble уменьшил ложноположительные ошибки до 19, но увеличил ложноотрицательные до 15 по сравнению с обычным голосованием. Поэтому его F1 оказался ниже. Для данной задачи обычный ансамбль лучше, потому что он меньше пропускает пациентов с болезнью.</p>
+<h1>Заключение</h1>
+<p>Во второй практической работе были обучены и сравнены модели для бинарной классификации наличия сердечного заболевания: логистическая регрессия, случайный лес, градиентный бустинг, обычное голосование и взвешенное голосование.</p>
+<p>Лучший результат показал Voting Ensemble: accuracy 0.8565, precision 0.8507, recall 0.8976, F1 0.8736, ROC-AUC 0.9139. Он оказался лучшим, потому что объединил разные типы моделей и дал самый удачный баланс ошибок. По матрице ошибок видно, что он пропустил 13 пациентов с болезнью, меньше остальных моделей.</p>
+<p>Логистическая регрессия тоже показала высокий F1 0.8638. Это означает, что в данных есть сильная линейная составляющая. Случайный лес дал близкий результат 0.8605, но не превзошёл логистическую регрессию. Это может быть связано с тем, что датасет не очень большой, а часть зависимости между признаками и диагнозом уже хорошо улавливается линейной моделью.</p>
+<p>Градиентный бустинг показал высокий recall 0.8898, но более низкий precision 0.8188. Он чаще находил пациентов с болезнью, но также чаще ошибочно относил пациентов без болезни к положительному классу. Поэтому по F1 он оказался ниже ансамбля голосования.</p>
+<p>Взвешенное голосование не улучшило обычное голосование. Хотя веса были выбраны по кросс-валидации, на тестовой выборке простое равное усреднение вероятностей оказалось устойчивее. Это показывает, что усложнение модели не гарантирует улучшение результата.</p>
+<p>Итоговый вывод: для данной задачи лучшим оказался ансамбль разных моделей, но преимущество над логистической регрессией умеренное. Это значит, что данные содержат полезный сигнал, однако классы частично пересекаются, поэтому ни одна модель не даёт идеального разделения.</p>
+<h1>Список использованных источников</h1>
+<ol>
+<li>World Health Organization. Cardiovascular diseases (CVDs). URL: https://www.who.int/en/news-room/fact-sheets/detail/cardiovascular-diseases-%28cvds%29</li>
+<li>UCI Machine Learning Repository. Heart Disease Dataset. URL: https://archive.ics.uci.edu/dataset/45/heart%2Bdisease</li>
+<li>scikit-learn documentation. LogisticRegression. URL: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html</li>
+<li>scikit-learn documentation. RandomForestClassifier. URL: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html</li>
+<li>scikit-learn documentation. GradientBoostingClassifier. URL: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html</li>
+<li>scikit-learn documentation. VotingClassifier. URL: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingClassifier.html</li>
+<li>scikit-learn documentation. Model evaluation: quantifying the quality of predictions. URL: https://scikit-learn.org/stable/modules/model_evaluation.html</li>
+</ol>
+<h1>Приложение А</h1>
+<p>Основной программный код:</p>
+<pre><code>from pathlib import Path
+import os
+import warnings
+
+import numpy as np
+import pandas as pd
+
+from sklearn.base import clone
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier, VotingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
+from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
+
+warnings.filterwarnings(&quot;ignore&quot;)
+
+RANDOM_STATE = 42
+TARGET_LABELS = [&quot;нет болезни&quot;, &quot;есть болезнь&quot;]
+
+def make_base_models():
+    return {
+        &quot;Logistic Regression&quot;: LogisticRegression(
+            max_iter=5000,
+            class_weight=&quot;balanced&quot;,
+            random_state=RANDOM_STATE,
+        ),
+        &quot;Random Forest&quot;: RandomForestClassifier(
+            n_estimators=300,
+            min_samples_leaf=2,
+            class_weight=&quot;balanced&quot;,
+            random_state=RANDOM_STATE,
+            n_jobs=1,
+        ),
+        &quot;Gradient Boosting&quot;: GradientBoostingClassifier(
+            n_estimators=150,
+            learning_rate=0.05,
+            max_depth=3,
+            random_state=RANDOM_STATE,
+        ),
+    }
+
+def calculate_rank_weights(cv_f1):
+    ordered = sorted(cv_f1.items(), key=lambda item: item[1])
+    return {name: rank + 1 for rank, (name, _) in enumerate(ordered)}
+
+def make_ensembles(base_models, rank_weights):
+    estimators = [
+        (&quot;logreg&quot;, clone(base_models[&quot;Logistic Regression&quot;])),
+        (&quot;rf&quot;, clone(base_models[&quot;Random Forest&quot;])),
+        (&quot;gb&quot;, clone(base_models[&quot;Gradient Boosting&quot;])),
+    ]
+    weights = [
+        rank_weights[&quot;Logistic Regression&quot;],
+        rank_weights[&quot;Random Forest&quot;],
+        rank_weights[&quot;Gradient Boosting&quot;],
+    ]
+    return {
+        &quot;Voting Ensemble&quot;: VotingClassifier(
+            estimators=estimators,
+            voting=&quot;soft&quot;,
+            n_jobs=1,
+        ),
+        &quot;Weighted Voting Ensemble&quot;: VotingClassifier(
+            estimators=[
+                (&quot;logreg&quot;, clone(base_models[&quot;Logistic Regression&quot;])),
+                (&quot;rf&quot;, clone(base_models[&quot;Random Forest&quot;])),
+                (&quot;gb&quot;, clone(base_models[&quot;Gradient Boosting&quot;])),
+            ],
+            voting=&quot;soft&quot;,
+            weights=weights,
+            n_jobs=1,
+        ),
+    }
+
+def evaluate_dataset(X, y):
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y,
+        test_size=0.25,
+        random_state=RANDOM_STATE,
+        stratify=y,
+    )
+
+    base_models = make_base_models()
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
+
+    cv_f1 = {}
+    for model_name, model in base_models.items():
+        scores = cross_val_score(clone(model), X_train, y_train, cv=cv, scoring=&quot;f1&quot;)
+        cv_f1[model_name] = float(scores.mean())
+
+    rank_weights = calculate_rank_weights(cv_f1)
+    models = {**base_models, **make_ensembles(base_models, rank_weights)}
+
+    rows = []
+    for model_name, model in models.items():
+        fitted = clone(model).fit(X_train, y_train)
+        y_pred = fitted.predict(X_test)
+        y_score = fitted.predict_proba(X_test)[:, 1]
+
+        rows.append(
+            {
+                &quot;Model&quot;: model_name,
+                &quot;Accuracy&quot;: accuracy_score(y_test, y_pred),
+                &quot;Precision&quot;: precision_score(y_test, y_pred, zero_division=0),
+                &quot;Recall&quot;: recall_score(y_test, y_pred, zero_division=0),
+                &quot;F1&quot;: f1_score(y_test, y_pred, zero_division=0),
+                &quot;ROC-AUC&quot;: roc_auc_score(y_test, y_score),
+            }
+        )
+
+    return pd.DataFrame(rows)</code></pre>
+</body>
+</html>
