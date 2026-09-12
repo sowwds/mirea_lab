@@ -1,0 +1,24 @@
+# Arduino/Wokwi: compiled sketches and simulator build output.
+/cyberphysical_systems/**/.build/
+
+# Keep the startup project's local Git history out of mirea_lab.
+/startup/main/.git/
+
+# Unity: generated caches, logs, local settings and IDE project files.
+/digital_twins/twins_proj/Library/
+/digital_twins/twins_proj/Temp/
+/digital_twins/twins_proj/Logs/
+/digital_twins/twins_proj/Obj/
+/digital_twins/twins_proj/Build/
+/digital_twins/twins_proj/Builds/
+/digital_twins/twins_proj/UserSettings/
+/digital_twins/twins_proj/MemoryCaptures/
+/digital_twins/twins_proj/Recordings/
+/digital_twins/twins_proj/.vs/
+/digital_twins/twins_proj/*.csproj
+/digital_twins/twins_proj/*.sln
+/digital_twins/twins_proj/*.slnx
+
+# Unity files created next to the project directory.
+/digital_twins/Logs/
+/digital_twins/Temp/

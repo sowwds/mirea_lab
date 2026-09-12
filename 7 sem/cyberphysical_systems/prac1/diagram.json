@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "author": "Aleksey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-st-nucleo-c031c6", "id": "nucleo", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-led", "id": "carRed", "top": -100, "left": 390, "attrs": { "color": "red", "label": "Cars: red" } },
+    { "type": "wokwi-led", "id": "carYellow", "top": -50, "left": 390, "attrs": { "color": "yellow", "label": "Cars: yellow" } },
+    { "type": "wokwi-led", "id": "carGreen", "top": 0, "left": 390, "attrs": { "color": "green", "label": "Cars: green" } },
+    { "type": "wokwi-led", "id": "pedRed", "top": 80, "left": 390, "attrs": { "color": "red", "label": "Pedestrians: red" } },
+    { "type": "wokwi-led", "id": "pedGreen", "top": 130, "left": 390, "attrs": { "color": "green", "label": "Pedestrians: green" } },
+    { "type": "wokwi-pushbutton", "id": "button", "top": 260, "left": 420, "attrs": { "color": "blue", "label": "Cross request" } },
+    { "type": "wokwi-potentiometer", "id": "pot", "top": 280, "left": -280, "attrs": { "value": "512", "label": "Crossing time" } },
+    { "type": "wokwi-buzzer", "id": "buzzer", "top": 310, "left": 250, "attrs": { "volume": "0.1" } }
+  ],
+  "connections": [
+    [ "nucleo:D13", "carRed:A", "red", [] ],
+    [ "nucleo:D12", "carYellow:A", "gold", [] ],
+    [ "nucleo:D11", "carGreen:A", "green", [] ],
+    [ "nucleo:D9", "pedRed:A", "red", [] ],
+    [ "nucleo:D8", "pedGreen:A", "green", [] ],
+    [ "carRed:C", "nucleo:GND.1", "black", [] ],
+    [ "carYellow:C", "nucleo:GND.1", "black", [] ],
+    [ "carGreen:C", "nucleo:GND.1", "black", [] ],
+    [ "pedRed:C", "nucleo:GND.1", "black", [] ],
+    [ "pedGreen:C", "nucleo:GND.1", "black", [] ],
+    [ "nucleo:D4", "button:1.l", "blue", [] ],
+    [ "button:2.l", "nucleo:GND.1", "black", [] ],
+    [ "nucleo:5V", "pot:VCC", "red", [] ],
+    [ "nucleo:GND.1", "pot:GND", "black", [] ],
+    [ "nucleo:A2", "pot:SIG", "green", [] ],
+    [ "nucleo:A5", "buzzer:1", "purple", [] ],
+    [ "buzzer:2", "nucleo:GND.1", "black", [] ]
+  ],
+  "dependencies": {}
+}

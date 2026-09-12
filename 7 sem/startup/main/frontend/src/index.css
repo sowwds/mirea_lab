@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+@layer utilities {
+      .scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(80,80,80,0.5) rgba(0,0,0,0);
+      }
+}
+
+@theme {
+  --color-surface0: #313244; /* Surface for panels */
+  --color-subtext0: #a6adc8; /* Slightly muted text */
+  --color-subtext1: #bac2de; /* Lighter muted text */
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: #0A0E21 !important;
+  height: 100vh; /* Fallback for older browsers */
+  height: 100dvh; /* Dynamic adjustment */
+}
+
+
+.message-background {
+  background-image: linear-gradient(to bottom, #ac4d93, #6837a3);
+}
+
+.image-background {
+  /* background-image: linear-gradient(to bottom, #f5c2e7, #cba6f7); */
+  background-size: auto;
+  background-position: center;
+  position: relative;
+  z-index: 0;
+}
+
+.image-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/rgbtm_A_majestic_luminous_celestial_body_like_a_gas_giant_encir.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 1;
+  background-blend-mode: overlay;
+  z-index: -1;
+  box-shadow: inset 0 0 500px 20px #0C1023;
+}
+
+.chat-messages {
+  overflow-y: auto;
+  z-index: 1; /* Над фоном */
+  flex: 1 1 auto; /* Явное распределение высоты */
+}
+
+/* Универсальная кнопка */
+.btn-universal {
+  /* Базовые стили */
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--btn-bg, theme('colors.surface0 / 50%'));
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Свечение и трансформация для hover и active */
+.btn-universal:hover,
+.btn-universal.active {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 15px rgba(255, 255, 255, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Градиенты для hover и active */
+.btn-universal:hover.gr1,
+.btn-universal.active.gr1 {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4) !important;
+}
+
+.btn-universal:hover.gr2,
+.btn-universal.active.gr2 {
+  background: linear-gradient(45deg, #a8edea, #fed6e3) !important;
+}
+
+.btn-universal:hover.gr3,
+.btn-universal.active.gr3 {
+  background: linear-gradient(45deg, #d4fc79, #96e6a1) !important;
+}
+
+.btn-universal:hover.gr4,
+.btn-universal.active.gr4 {
+  background: linear-gradient(45deg, #a1c4fd, #c2e9fb) !important;
+}
+
+.btn-universal:hover.gr5,
+.btn-universal.active.gr5 {
+  background: linear-gradient(45deg, #fbc2eb, #a6c1ee) !important;
+  /* background: linear-gradient(45deg, #be7fac, #6e86b1) !important; */
+}
+
+.btn-universal:hover.gr6,
+.btn-universal.active.gr6 {
+  background: linear-gradient(45deg, #3b82f6, #9333ea) !important;
+}
+
+.btn-universal:hover.gr7,
+.btn-universal.active.gr7 {
+  background: linear-gradient(45deg, rgba(147, 197, 253, 0.5), rgba(167, 139, 250, 0.5)) !important;
+}
+
+.btn-universal:hover.gr-yandex,
+.btn-universal.active.gr-yandex {
+  background: linear-gradient(45deg, #ffdb4d, #ffcc00) !important;
+}
+
+.btn-universal:hover.gr-vk,
+.btn-universal.active.gr-vk {
+  background: linear-gradient(45deg, #4d76a1, #0077ff) !important;
+}
+
+.btn-universal:hover.gr-mailru,
+.btn-universal.active.gr-mailru {
+  background: linear-gradient(45deg, #f0f0f0, #ffffff) !important;
+  color: #005cbf !important;
+}
+
+/* Анимация блеска */
+.btn-universal::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease-in-out;
+}
+
+.btn-universal:hover::after,
+.btn-universal.active::after {
+  left: 100%;
+}
+
+/* Анимация нажатия */
+.btn-universal:active {
+  transform: scale(0.98) translateY(1px);
+}
+
+/* Disabled состояние */
+.btn-universal.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  color: theme('colors.subtext0');
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-universal.disabled:hover,
+.btn-universal.disabled.active {
+  background: var(--btn-bg, theme('colors.surface0 / 50%')) !important;
+  transform: none !important;
+}
+
+.btn-universal.disabled::after {
+  display: none;
+}
+
+/* Muted вариант */
+.btn-universal.muted {
+  --btn-bg: theme('colors.surface0 / 30%');
+  color: theme('colors.subtext1');
+}
+
+.btn-universal.muted:hover,
+.btn-universal.muted.active {
+  --btn-bg: theme('colors.surface0 / 40%');
+}
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin 5s linear infinite;
+  }
+
+  .animate-orbit {
+    animation: orbit 4s linear infinite;
+  }
+
+  .animate-orbit-reverse {
+    animation: orbit 6s linear infinite reverse;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(50%);
+  }
+  to {
+    transform: rotate(360deg) translateX(50%);
+  }
+}
+
+/* Scroll-triggered entrance animations */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

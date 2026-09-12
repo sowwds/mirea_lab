@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = '.build/prac1.ino.bin'
+elf = '.build/prac1.ino.elf'
