@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "author": "Aleksey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-st-nucleo-c031c6", "id": "nucleo", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-ili9341", "id": "tft", "top": -20, "left": 420, "attrs": { "rotation": "90" } },
+    { "type": "wokwi-potentiometer", "id": "potX", "top": 280, "left": -260, "attrs": { "value": "512", "label": "X" } },
+    { "type": "wokwi-potentiometer", "id": "potY", "top": 280, "left": -120, "attrs": { "value": "512", "label": "Y" } },
+    { "type": "wokwi-pushbutton", "id": "button", "top": 300, "left": 310, "attrs": { "color": "blue", "label": "Style" } }
+  ],
+  "connections": [
+    [ "nucleo:5V", "tft:VCC", "red", [] ],
+    [ "nucleo:GND.1", "tft:GND", "black", [] ],
+    [ "nucleo:D13", "tft:SCK", "green", [] ],
+    [ "nucleo:D11", "tft:MOSI", "green", [] ],
+    [ "nucleo:D3", "tft:CS", "purple", [] ],
+    [ "nucleo:D2", "tft:D/C", "blue", [] ],
+    [ "nucleo:5V", "potX:VCC", "red", [] ],
+    [ "nucleo:GND.1", "potX:GND", "black", [] ],
+    [ "nucleo:A3", "potX:SIG", "green", [] ],
+    [ "nucleo:5V", "potY:VCC", "red", [] ],
+    [ "nucleo:GND.1", "potY:GND", "black", [] ],
+    [ "nucleo:A2", "potY:SIG", "green", [] ],
+    [ "nucleo:D4", "button:1.l", "blue", [] ],
+    [ "button:2.l", "nucleo:GND.1", "black", [] ]
+  ],
+  "dependencies": {}
+}

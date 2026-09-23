@@ -1,16 +1,90 @@
 # <p align="center">Программирование киберфизических систем</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++" />
-  <img src="https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white" alt="Arduino" />
-  <img src="https://img.shields.io/badge/ESP32-E7352C?style=for-the-badge&logo=espressif&logoColor=white" alt="ESP32" />
-  <img src="https://img.shields.io/badge/MQTT-660066?style=for-the-badge&logo=mqtt&logoColor=white" alt="MQTT" />
+  <img src="https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white" alt="C" />
+  <img src="https://img.shields.io/badge/STM32-03234B?style=for-the-badge&logo=stmicroelectronics&logoColor=white" alt="STM32" />
+  <img src="https://img.shields.io/badge/Arduino%20CLI-00979D?style=for-the-badge&logo=arduino&logoColor=white" alt="Arduino CLI" />
+  <img src="https://img.shields.io/badge/Wokwi-6D28D9?style=for-the-badge" alt="Wokwi" />
 </p>
 
 ---
 
 ## Описание предмета
-Здесь будет описание предмета.
 
-## Необходимо для зачета
-Здесь будут требования для получения зачета.
+Практические работы по программированию микроконтроллеров STM32. Код выполняется на языке C с библиотекой STM32 HAL, собирается локально через Arduino CLI и проверяется в симуляторе Wokwi для VS Code.
+
+## Необходимо для зачёта
+
+Классический план предмета из СДО неверный. Реальный план практических работ у преподавателя Сухатерина Алексея Борисовича:
+
+1. Архитектура микроконтроллера семейства Cortex-M. Конфигурирование микроконтроллера.
+2. Принцип работы порта ввода-вывода микроконтроллера GPIO. Выполнение проекта «Светофор».
+3. Принцип работы таймера микроконтроллера. Расчёт времени таймера.
+4. Принцип работы таймера в режиме ШИМ. Регулирование яркости светодиода.
+5. Принцип работы функциональных устройств. Управление сервоприводом и шаговым двигателем.
+6. Принцип работы аналого-цифрового преобразователя (ADC) микроконтроллера. Измерение напряжения делителя напряжения.
+7. Принцип работы микроконтроллера с дисплеем. Вывод информации о напряжении делителя на дисплей.
+
+Каждая работа сдаётся с отчётом: титульный лист берётся из [шаблона](./cmd/report_template.docx), далее располагаются конспект по теме, собственная реализация, листинги фактического кода, описание схемы и скриншоты. Оформление должно соответствовать [правилам](./cmd/report_rules.pdf).
+
+## Пояснение по агентной авто-генерации отчётов
+
+Для упрощения процесса форматирования отчетов тут подготовлена база для генерации отчетов через агента (в моем случае codex)
+схема работает так:
+
+```text
+              исходники практички
+                         ↓
+          агент помогает подготовить report_pracN.md под генератор
+                         ↓
+      python3 cmd/build_report.py pracN/report/report_pracN.md
+                         ↓
+        HTML + DOCX по шаблону + PDF с оглавлением
+```
+
+Генератор универсален: он принимает путь к любому отчёту в папке `pracN/report/`, а не содержит логику конкретной работы. Markdown и вложения являются редактируемыми источниками; HTML, DOCX и PDF — производными файлами. Титульный лист сохраняет данные из `cmd/report_template.docx`: заменяется только название практической работы.
+
+Для этого процесса необходимы `python python-docx chromium poppler`
+
+> [!IMPORTANT]
+> Перед первой сборкой измените ФИО, группу и при необходимости год в [шаблоне титульного листа](./cmd/report_template.docx). Генератор заменяет в нём только название практической работы.
+
+Файл пояснения для иишки и полная спецификация формата .md, ограничений, этапов сборки, проверки PDF находится в [cmd/REPORT_WORKFLOW.md](./cmd/REPORT_WORKFLOW.md). Сам генератор — [cmd/build_report.py](./cmd/build_report.py).
+
+## Что в этом репозитории?
+
+```text
+cmd/                  # шаблоны, правила и генерация отчётов
+prac1/report/         # отчёт по конфигурированию Cortex-M и STM32
+prac2/                # GPIO-светофор: исходники, схема, сборка и отчёт
+prac3/                # светофор с аппаратным таймером TIM14
+praclcd/              # отдельный проект с TFT-дисплеем ILI9341
+```
+
+Я использую локальный wokwi (расширение для vscode, оно называется локальным, хотя все равно требует интернета), а также локальную сборку через arduino-cli для того чтобы не ждать билда на веб-wokwi
+
+### Локальный Wokwi и сборка STM32
+
+Требуется Arduino CLI, ядро STM32 и расширение Wokwi:
+
+например, для Arch:
+```bash
+paru -S arduino-cli
+arduino-cli core update-index
+arduino-cli core install STMicroelectronics:stm32
+code --install-extension wokwi.wokwi-vscode
+```
+
+Расширению Wokwi для vscode требуется лицензия; запросить её можно командой `F1` → `Wokwi: Request a new License`.
+
+Чтобы собрать и запустить (на примере prac2):
+
+```bash
+cd prac2
+./build-local.sh
+code .
+```
+
+После сборки открыть `diagram.json` и запустить симулятор кнопкой в окне схемы либо командой `F1` → `Wokwi: Start Simulator`. После каждого изменения `main.c` снова запускайте `./build-local.sh`.
+
+Arduino CLI требует файл `.ino`, хотя источник  работ — `main.c`. Поэтому скрипт создаёт пустой `.ino` только во временной папке `/tmp`, копирует туда `main.c` и сохраняет результат в `.build/`. Исходник проекта не дублируется и не превращается в Arduino-скетч. Точные сценарии, распиновка и проверки приведены в [prac2/README.md](./prac2/README.md) и [prac3/README.md](./prac3/README.md).
