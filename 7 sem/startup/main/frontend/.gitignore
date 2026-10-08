@@ -24,6 +24,7 @@ lerna-debug.log*
 
 # Temporary files
 tmp/
+/prompt.md
 *.tmp
 *.swp
 *.swo
@@ -37,4 +38,3 @@ Thumbs.db
 *.ntvs*
 *.njsproj
 *.sln
-

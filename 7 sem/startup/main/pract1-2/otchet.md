@@ -73,6 +73,6 @@ Regular для основного текста, Medium и Semibold для эле
 
 ### Логотип
 Основной логотип:
-![Основной графический логотип](../frontend/src/assets/планета.jpg)
+![Основной графический логотип](../frontend/src/assets/logo.png)
 
 В самом сервисе чаще используется вариант: надпись **Serenity**, шрфитом Inter, и иконка **SparklesIcon** из набора `@heroicons/react/24/solid`.
