@@ -1,0 +1,14 @@
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\bin\Debug\net8.0\RPKApp6.exe
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\bin\Debug\net8.0\RPKApp6.deps.json
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\bin\Debug\net8.0\RPKApp6.runtimeconfig.json
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\bin\Debug\net8.0\RPKApp6.dll
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\bin\Debug\net8.0\RPKApp6.pdb
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\obj\Debug\net8.0\RPKApp6.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\obj\Debug\net8.0\RPKApp6.AssemblyInfoInputs.cache
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\obj\Debug\net8.0\RPKApp6.AssemblyInfo.cs
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\obj\Debug\net8.0\RPKApp6.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\obj\Debug\net8.0\RPKApp6.dll
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\obj\Debug\net8.0\refint\RPKApp6.dll
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\obj\Debug\net8.0\RPKApp6.pdb
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\obj\Debug\net8.0\RPKApp6.genruntimeconfig.cache
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp6\obj\Debug\net8.0\ref\RPKApp6.dll

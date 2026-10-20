@@ -1,0 +1,14 @@
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\obj\Debug\net8.0\RPKApp4.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\obj\Debug\net8.0\RPKApp4.AssemblyInfoInputs.cache
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\obj\Debug\net8.0\RPKApp4.AssemblyInfo.cs
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\obj\Debug\net8.0\RPKApp4.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\bin\Debug\net8.0\RPKApp4.exe
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\bin\Debug\net8.0\RPKApp4.deps.json
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\bin\Debug\net8.0\RPKApp4.runtimeconfig.json
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\bin\Debug\net8.0\RPKApp4.dll
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\bin\Debug\net8.0\RPKApp4.pdb
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\obj\Debug\net8.0\RPKApp4.dll
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\obj\Debug\net8.0\refint\RPKApp4.dll
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\obj\Debug\net8.0\RPKApp4.pdb
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\obj\Debug\net8.0\RPKApp4.genruntimeconfig.cache
+C:\Users\ASUS\RiderProjects\RPKApp1\RPKApp4\obj\Debug\net8.0\ref\RPKApp4.dll
