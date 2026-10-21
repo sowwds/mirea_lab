@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Практическая 8 — 3D-модель</title>
+<script>
+window.PRACTICE_MODEL={
+ number:8,title:'Полузакрытый контур',description:'Выемка открывается к одному краю бруска. Снизу остаётся сплошное основание, а с трёх сторон — стенки.',
+ bounds:[0,82,0,82],height:34,floor:7.3,
+ start:[69.7,32.8,3],
+ segments:[['cw',53.3,16.4,16.4,4],['line',41.41,16.4,0,5],['cw',36.56,20.5,4.92,6],['ccw',16.4,41.34,24.6,7],['cw',12.3,36.49,4.92,8],['line',12.3,89,0,9]],
+ closing:[['line',69.7,89,0,null],['line',69.7,32.8,0,null]],
+ leadStart:[69.7,89,2],lead:[['line',69.7,32.8,0,3]],exit:[],
+ note:'Модель построена по исправленным координатам и R-кодам текущей УП. Участок 7–8 сохранён буквально: там есть разворот вниз перед выходом вверх к открытому краю.'
+};
+</script>
+<script src="../visualizations/contour-viewer.js" defer></script>
+</html>

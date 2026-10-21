@@ -1,0 +1,169 @@
+"""BRep stock-removal animation for practical 11-12.
+
+Uses FreeCAD's Legacy CAM task panel and boolean playback, with current
+ToolBit compatibility and exact swept flat-endmill envelopes. No rectangular
+stock replacement, mesh clipping, or changes to the machining program.
+"""
+import math
+from pathlib import Path as FilePath
+import FreeCAD as App
+import FreeCADGui as Gui
+import Part
+from Path.Main.Gui.Simulator import PathSimulation
+
+V = App.Vector
+PROJECT = FilePath('/home/aleksey/Documents/mirea_lab/7 sem/prog_techn/prac11-12/model11-12.FCStd')
+
+
+class ActualStockSimulation(PathSimulation):
+    def SimulateMill(self):
+        self.isVoxel = False
+        self.cutMaterialIn = None
+        super().SimulateMill()
+        self.cutMaterial.Label = 'Actual stock - boolean CAM animation'
+        self.cutMaterial.ViewObject.ShapeColor = (0.76, 0.79, 0.83)
+        self.cutMaterial.ViewObject.LineColor = (0.10, 0.13, 0.17)
+        self.cutMaterial.ViewObject.DisplayMode = 'Flat Lines'
+        self.cutMaterial.ViewObject.Transparency = 0
+        self.taskForm.form.sliderAccuracy.setEnabled(False)
+        self.taskForm.form.labelAccuracy.setText('BRep')
+        self.taskForm.form.sliderSpeed.setValue(10)
+        for obj in self.job.Document.Objects:
+            if obj not in (self.cutMaterial, self.cutTool):
+                obj.Visibility = False
+        self.cutTool.Visibility = False
+
+    def SetupOperation(self, itool):
+        super().SetupOperation(itool)
+        # The old boolean engine expects a Vector, while the voxel engine uses
+        # Placement. FreeCAD 1.1 shares this method between them.
+        self.curpos = V(self.initialPos)
+
+    def GetPathSolid(self, tool, cmd, pos):
+        """Solid occupied by a flat-endmill moving along a straight/XY arc cut.
+
+        The supplied job uses horizontal cuts and vertical feeds, without ramps.
+        Constructing capsule/annular-sector solids avoids the old engine's
+        undocumented radius shrink and degeneracy for arc radius == tool radius.
+        """
+        p = dict(cmd.Parameters)
+        end = V(p.get('X', pos.x), p.get('Y', pos.y), p.get('Z', pos.z))
+        radius = float(tool.Diameter) / 2
+        h = max(float(tool.CuttingEdgeHeight), self.job.Stock.Shape.BoundBox.ZLength + 2)
+        z = min(pos.z, end.z)
+        height = h + abs(end.z - pos.z)
+        dx, dy = end.x - pos.x, end.y - pos.y
+        if cmd.Name in ('G1', 'G01'):
+            distance = math.hypot(dx, dy)
+            if distance < 1e-9:
+                return Part.makeCylinder(radius, height, V(pos.x, pos.y, z)), end
+            if abs(end.z - pos.z) > 1e-5:
+                raise RuntimeError('Ramped cuts need a separate swept-tool implementation')
+            u = V(dx / distance, dy / distance, 0)
+            n = V(-u.y, u.x, 0)
+            a, b = V(pos.x, pos.y, z), V(end.x, end.y, z)
+            al, bl, br, ar = a+n*radius, b+n*radius, b-n*radius, a-n*radius
+            wire = Part.Wire([
+                Part.makeLine(al, bl),
+                Part.Arc(bl, b+u*radius, br).toShape(),
+                Part.makeLine(br, ar),
+                Part.Arc(ar, a-u*radius, al).toShape(),
+            ])
+            return Part.Face(wire).extrude(V(0, 0, height)), end
+        if cmd.Name not in ('G2', 'G02', 'G3', 'G03'):
+            raise RuntimeError('Unsupported cutting command: ' + cmd.Name)
+        if abs(end.z - pos.z) > 1e-5:
+            raise RuntimeError('Helical cuts are not used in practical 11-12')
+        cx, cy = pos.x+p.get('I', 0), pos.y+p.get('J', 0)
+        rpath = math.hypot(pos.x-cx, pos.y-cy)
+        a0, a1 = math.atan2(pos.y-cy, pos.x-cx), math.atan2(end.y-cy, end.x-cx)
+        da = (a1-a0) % (2*math.pi) if cmd.Name in ('G3', 'G03') else -((a0-a1) % (2*math.pi))
+        outer, inner = rpath+radius, max(0.0, rpath-radius)
+        if inner < 1e-5:
+            inner = 0.0
+        def point(r, a):
+            return V(cx+r*math.cos(a), cy+r*math.sin(a), z)
+        os, oe = point(outer, a0), point(outer, a0+da)
+        edges = [Part.Arc(os, point(outer, a0+da/2), oe).toShape()]
+        if inner:
+            ie, istart = point(inner, a0+da), point(inner, a0)
+            edges.extend([Part.makeLine(oe, ie), Part.Arc(ie, point(inner, a0+da/2), istart).toShape(), Part.makeLine(istart, os)])
+        else:
+            center = V(cx, cy, z)
+            edges.extend([Part.makeLine(oe, center), Part.makeLine(center, os)])
+        sector = Part.Face(Part.Wire(edges)).extrude(V(0, 0, height))
+        caps = [Part.makeCylinder(radius, height, V(pos.x, pos.y, z)), Part.makeCylinder(radius, height, V(end.x, end.y, z))]
+        sweep = sector.multiFuse(caps).removeSplitter()
+        if not sweep.isValid():
+            raise RuntimeError('Invalid swept cutting volume')
+        return sweep, end
+
+
+def start_actual_stock_animation():
+    if Gui.Control.activeDialog():
+        raise RuntimeError('Close the current task panel, then run the macro again')
+    doc = next((d for d in App.listDocuments().values() if FilePath(d.FileName or '.') == PROJECT), None)
+    if doc is None:
+        doc = App.openDocument(str(PROJECT))
+    App.setActiveDocument(doc.Name)
+    Gui.activateWorkbench('CAMWorkbench')
+    job = doc.getObject('Job')
+    contour=doc.getObject('OpenContour') or doc.getObject('Contour')
+    if hasattr(contour,'Side') and contour.Side != 'Outside':
+        raise RuntimeError('Contour.Side must be Outside')
+    if hasattr(contour,'ProgrammedDiameter') and abs(float(contour.ProgrammedDiameter)-float(contour.ToolController.Tool.Diameter))>1e-6:
+        raise RuntimeError('Rebuild the contour for the changed tool diameter')
+    if abs(job.Stock.Shape.BoundBox.ZMax-30) > 1e-6:
+        raise RuntimeError('Use the 30 mm blank for contour-only machining')
+    Gui.Selection.clearSelection()
+    Gui.Selection.addSelection(job)
+    sim = ActualStockSimulation()
+    sim.Activate()
+    view = Gui.activeDocument().activeView()
+    view.setAnimationEnabled(False)
+    view.viewAxonometric()
+    view.fitAll()
+    Gui.updateGui()
+    # Keep the controller alive for repeated playback.
+    Gui._practical11_actual_stock_simulator = sim
+    return sim
+
+
+def compute_actual_stock_result(doc, job):
+    """The same swept-volume engine without a task panel, for reproducible builds."""
+    import PathScripts.PathUtils as PathUtils
+    engine = ActualStockSimulation()
+    engine.job = job
+    stock = job.Stock.Shape.copy()
+    pos = V(0, 0, stock.BoundBox.ZMax)
+    count = 0
+    for op in job.Operations.Group:
+        if not op.Active:
+            continue
+        tool = op.ToolController.Tool
+        for command in PathUtils.getPathWithPlacement(op).Commands:
+            count += 1
+            p = command.Parameters
+            if command.Name in ('G0', 'G00'):
+                pos = V(p.get('X', pos.x), p.get('Y', pos.y), p.get('Z', pos.z))
+            elif command.Name in ('G1', 'G01', 'G2', 'G02', 'G3', 'G03'):
+                sweep, pos = engine.GetPathSolid(tool, command, pos)
+                stock = stock.cut([sweep], 1e-3).removeSplitter()
+                if not stock.isValid():
+                    raise RuntimeError('Invalid stock after command ' + str(count))
+    target = doc.getObject('FinishedPart').Shape
+    residual = stock.cut(target).Volume
+    gouge = target.cut(stock).Volume
+    if residual > 0.05 or gouge > 0.05:
+        raise RuntimeError('Simulation disagrees with target: residual=%g, gouge=%g' % (residual, gouge))
+    return stock, {'engine': 'OpenCascade BRep boolean stock removal with swept endmill',
+                   'commands': count, 'solid_valid': stock.isValid(),
+                   'solid_count': len(stock.Solids), 'stock_volume_mm3': stock.Volume,
+                   'target_volume_mm3': target.Volume, 'residual_volume_mm3': residual,
+                   'gouge_volume_mm3': gouge, 'boolean_tolerance_mm': 0.001,
+                   'initial_stock_halfspace_clip': False,
+                   'scope': 'actual stock and cutting envelope; no machine kinematics'}
+
+
+if not globals().get('_ACTUAL_STOCK_DEFINE_ONLY', False):
+    actual_stock_simulator = start_actual_stock_animation()

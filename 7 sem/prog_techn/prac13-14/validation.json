@@ -1,0 +1,115 @@
+{
+  "solid_valid": true,
+  "solids": 1,
+  "part_volume_mm3": 260461.54347035912,
+  "blank_volume_mm3": 300000.0,
+  "commands": {
+    "Pocket": 63
+  },
+  "parameters": {
+    "block": [
+      100,
+      100,
+      30
+    ],
+    "pocket_floor_z": 20,
+    "pocket_depth": 10,
+    "pocket_bounds": [
+      -85,
+      -15,
+      15,
+      85
+    ],
+    "radii": [
+      20,
+      20,
+      15,
+      8,
+      30,
+      8
+    ],
+    "small_fillet_centers": [
+      [
+        -52.14835124201342,
+        23
+      ],
+      [
+        -23,
+        52.14835124201342
+      ]
+    ]
+  },
+  "postprocessor": "fanuc",
+  "change_point": [
+    -50,
+    350,
+    250
+  ],
+  "tool_length_compensation": "pre-set tool tip, G49; no G43/H table assumed",
+  "simulation": {
+    "engine": "FreeCAD PathSimulator.PathSim",
+    "grid_mm": 0.2,
+    "arc_sagitta_mm": 0.04,
+    "applied_linear_segments": 206,
+    "arc_segments": 168,
+    "remaining_volume_mm3": null,
+    "target_volume_mm3": 260461.54347035912,
+    "volume_difference_mm3": null,
+    "blank_volume_mm3": 300000.0,
+    "removed_volume_mm3": null,
+    "initial_stock_halfspace_clip": false,
+    "mesh_facets": 2448,
+    "mesh_closed": false,
+    "scope": "stock removal only; machine kinematics and fixture collisions not simulated"
+  },
+  "gcode_checks": {
+    "line_count": 90,
+    "ascii": true,
+    "cut_levels_z": [
+      20.0
+    ],
+    "raises_to_z40": 2,
+    "metric_before_first_move": true,
+    "numbered_blocks": 88,
+    "arc_count": 24,
+    "max_arc_radius_mismatch_mm": 0.0010115996924788817,
+    "feeds_mm_min": [
+      250.0,
+      1600.0
+    ],
+    "spindles_rpm": [
+      8000.0
+    ],
+    "tool_changes": [
+      5
+    ],
+    "drilling_cycles": [],
+    "end_position": {
+      "X": -50.0,
+      "Y": 350.0,
+      "Z": 250.0
+    },
+    "status": "passed; structural checks only, not a target-controller test"
+  },
+  "sampled_geometry_checks": {
+    "method": "sampled wall clearance and raster pocket coverage; no 3D boolean loop",
+    "wall_sample_count": 1995,
+    "wall_sampling_max_step_mm": 0.5,
+    "minimum_center_to_part_mm": 4.9937126096086075,
+    "maximum_sampled_wall_intrusion_mm": 0.006287390391392478,
+    "wall_tolerance_mm": 0.05,
+    "coverage_grid_mm": 0.5,
+    "pocket_grid_points": 15709,
+    "uncovered_grid_points": 0,
+    "arc_chord_sagitta_mm": 0.002,
+    "cut_levels_z": [
+      20.0
+    ]
+  },
+  "simplification": {
+    "single_contour_or_pocket_level_z": 20,
+    "full_depth_mm": 10,
+    "educational_full_depth_assumption": true,
+    "machine_cutting_conditions_validated": false
+  }
+}

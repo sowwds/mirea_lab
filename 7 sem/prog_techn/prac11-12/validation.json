@@ -1,0 +1,124 @@
+{
+  "solid_valid": true,
+  "solids": 1,
+  "part_volume_mm3": 377258.30199999997,
+  "blank_volume_mm3": 412500.0,
+  "commands": {
+    "OpenContour": 15
+  },
+  "parameters": {
+    "outer_xy": [
+      [
+        -150,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        100
+      ],
+      [
+        -100,
+        100
+      ],
+      [
+        -150,
+        50
+      ]
+    ],
+    "upper_xy": [
+      [
+        -140,
+        10
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        0,
+        90
+      ],
+      [
+        -95.86,
+        90
+      ],
+      [
+        -140,
+        45.86
+      ]
+    ],
+    "lower_height": 20,
+    "total_height": 30,
+    "blank_height": 30
+  },
+  "postprocessor": "fanuc",
+  "change_point": [
+    50,
+    50,
+    150
+  ],
+  "tool_length_compensation": "pre-set tool tip, G49; no G43/H table assumed",
+  "simulation": {
+    "engine": "OpenCascade BRep boolean stock removal with swept endmill",
+    "commands": 15,
+    "solid_valid": true,
+    "solid_count": 1,
+    "stock_volume_mm3": 377258.302183275,
+    "target_volume_mm3": 377258.30199999997,
+    "residual_volume_mm3": 0.0,
+    "gouge_volume_mm3": 0.0,
+    "boolean_tolerance_mm": 0.001,
+    "initial_stock_halfspace_clip": false,
+    "scope": "actual stock and cutting envelope; no machine kinematics"
+  },
+  "animation_checks": {
+    "legacy_full_playback_commands": 15,
+    "actual_stock_full_playback_commands": 15,
+    "attribute_error": false,
+    "actual_stock_residual_volume_mm3": 0.0,
+    "actual_stock_gouge_volume_mm3": 0.0
+  },
+  "simplification": {
+    "facing_removed": true,
+    "blank_height_mm": 30,
+    "tool_numbers": [
+      2
+    ],
+    "cut_level_z": 20,
+    "commands": 15,
+    "full_depth_cutting_machine_validated": false
+  },
+  "gcode_checks": {
+    "line_count": 42,
+    "ascii": true,
+    "cut_levels_z": [
+      20.0
+    ],
+    "raises_to_z40": 1,
+    "metric_before_first_move": true,
+    "numbered_blocks": 40,
+    "arc_count": 3,
+    "max_arc_radius_mismatch_mm": 0.0005632560914179408,
+    "feeds_mm_min": [
+      250.0,
+      800.0
+    ],
+    "spindles_rpm": [
+      4000.0
+    ],
+    "tool_changes": [
+      2
+    ],
+    "drilling_cycles": [],
+    "end_position": {
+      "X": 50.0,
+      "Y": 50.0,
+      "Z": 150.0
+    },
+    "status": "passed; structural checks only, not a target-controller test"
+  }
+}

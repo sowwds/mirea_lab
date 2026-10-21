@@ -1,0 +1,41 @@
+[
+  {
+    "file": "prac11-12/model11-12_kompas24.step",
+    "valid_solid": true,
+    "solid_count": 1,
+    "dimensions_mm": [
+      150.0,
+      100.0,
+      30.0
+    ],
+    "volume_mm3": 377258.30199999997,
+    "roundtrip_volume_difference_mm3": 0.0,
+    "schema_line": "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));"
+  },
+  {
+    "file": "prac13-14/model13-14_kompas24.step",
+    "valid_solid": true,
+    "solid_count": 1,
+    "dimensions_mm": [
+      100.0,
+      100.0,
+      30.0
+    ],
+    "volume_mm3": 260461.54347035743,
+    "roundtrip_volume_difference_mm3": 1.6880221664905548e-09,
+    "schema_line": "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));"
+  },
+  {
+    "file": "prac15-16/model15-16_kompas24.step",
+    "valid_solid": true,
+    "solid_count": 1,
+    "dimensions_mm": [
+      80.0,
+      40.0,
+      20.0
+    ],
+    "volume_mm3": 60309.07925110099,
+    "roundtrip_volume_difference_mm3": 8.731149137020111e-11,
+    "schema_line": "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));"
+  }
+]

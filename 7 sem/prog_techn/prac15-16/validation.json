@@ -1,0 +1,109 @@
+{
+  "solid_valid": true,
+  "solids": 1,
+  "part_volume_mm3": 60309.07925110108,
+  "blank_volume_mm3": 63999.999999999985,
+  "commands": {
+    "DrillHole1": 10,
+    "DrillHole2": 10,
+    "DrillHole3": 10
+  },
+  "parameters": {
+    "block": [
+      80,
+      40,
+      20
+    ],
+    "holes": [
+      [
+        15,
+        -15,
+        13
+      ],
+      [
+        45,
+        -30,
+        18
+      ],
+      [
+        65,
+        -15,
+        null
+      ]
+    ],
+    "diameter": 10,
+    "tip_angle": 118,
+    "tip_height": 3.0043030951378014,
+    "depths_measured_to_tip": true,
+    "through_tip_z": -23.5043030951378
+  },
+  "postprocessor": "fanuc",
+  "change_point": [
+    40,
+    100,
+    250
+  ],
+  "tool_length_compensation": "pre-set tool tip, G49; no G43/H table assumed",
+  "simulation": {
+    "engine": "FreeCAD PathSimulator.PathSim",
+    "grid_mm": 0.2,
+    "arc_sagitta_mm": 0.04,
+    "applied_linear_segments": 24,
+    "arc_segments": 0,
+    "remaining_volume_mm3": null,
+    "target_volume_mm3": 60309.07925110108,
+    "volume_difference_mm3": null,
+    "blank_volume_mm3": 63999.999999999985,
+    "removed_volume_mm3": null,
+    "initial_stock_halfspace_clip": false,
+    "mesh_facets": 3784,
+    "mesh_closed": false,
+    "scope": "stock removal only; machine kinematics and fixture collisions not simulated"
+  },
+  "gcode_checks": {
+    "line_count": 71,
+    "ascii": true,
+    "metric_before_first_move": true,
+    "numbered_blocks": 69,
+    "arc_count": 0,
+    "max_arc_radius_mismatch_mm": 0,
+    "feeds_mm_min": [
+      250.0
+    ],
+    "spindles_rpm": [
+      2500.0
+    ],
+    "tool_changes": [
+      5
+    ],
+    "drilling_cycles": [
+      {
+        "X": 15.0,
+        "Y": -15.0,
+        "Z": -13.0,
+        "R": 3.0,
+        "F": 250.0
+      },
+      {
+        "X": 45.0,
+        "Y": -30.0,
+        "Z": -18.0,
+        "R": 3.0,
+        "F": 250.0
+      },
+      {
+        "X": 65.0,
+        "Y": -15.0,
+        "Z": -23.504,
+        "R": 3.0,
+        "F": 250.0
+      }
+    ],
+    "end_position": {
+      "X": 40.0,
+      "Y": 100.0,
+      "Z": 250.0
+    },
+    "status": "passed; structural checks only, not a target-controller test"
+  }
+}

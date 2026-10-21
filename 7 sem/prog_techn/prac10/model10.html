@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Практическая 10 — модель детали</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101827;color:#e2e8f0;font:15px/1.5 system-ui,sans-serif}main{display:grid;grid-template-columns:1fr 330px;min-height:100vh}#view{position:relative;min-height:620px;overflow:hidden}canvas{width:100%;height:100%;position:absolute;touch-action:none;cursor:grab}canvas:active{cursor:grabbing}aside{background:#192335;padding:28px;border-left:1px solid #304158}h1{font-size:23px;line-height:1.25;margin:0 0 16px}h2{font-size:15px;margin-top:28px}p{color:#b5c4d8}button,select{font:inherit;background:#26364d;color:#eef4ff;border:1px solid #435775;border-radius:8px;padding:8px 10px}select{width:100%;margin:8px 0 18px}button{cursor:pointer}button:hover{background:#344b69}.buttons{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0}label{display:block}input{accent-color:#5ac8fa}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:9px 3px;border-bottom:1px solid #33435a}th{color:#a8b9ce;font-weight:500}.note{font-size:13px;color:#9cadc5}.badge{position:absolute;border-radius:30px;padding:3px 10px;color:#101827;font-weight:800;pointer-events:none;transform:translate(-50%,-50%);border:2px solid #fff8;box-shadow:0 2px 8px #0008}.tip{position:absolute;bottom:20px;left:24px;right:20px;font-size:13px;color:#b5c4d8;pointer-events:none}.legend{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}#error{position:absolute;top:30%;padding:30px;color:#ffb8b8}a{color:#7dd3fc}#size{font-weight:600;color:#fff}@media(max-width:800px){main{display:flex;flex-direction:column}#view{min-height:65vh}aside{border-left:0;border-top:1px solid #304158;padding:22px}}
+main{height:100vh;min-height:0}#view{min-height:0}aside{overflow-y:auto}@media(max-width:800px){main{height:auto;min-height:100vh}#view{height:65vh;min-height:400px;flex:none}aside{overflow-y:visible}}
+</style>
+<main>
+ <section id="view"><canvas id="canvas"></canvas><div id="labels"></div><div class="tip">Вращение: перетаскивайте мышью или пальцем. Масштаб: колесо мыши или жест двумя пальцами.</div><div id="error" hidden></div></section>
+ <aside>
+  <h1>Три отверстия<br>в прямоугольном бруске</h1>
+  <label for="model">Размеры модели</label>
+  <select id="model"><option value="variant">Вариант 9 — по текущему отчёту</option><option value="original">Исходный эскиз методички</option></select>
+  <div id="size"></div>
+  <div class="buttons"><button data-view="iso">Общий вид</button><button data-view="top">Сверху</button><button data-view="bottom">Снизу</button><button data-view="front">Сбоку</button></div>
+  <label><input id="xray" type="checkbox"> Прозрачная заготовка</label>
+  <p>Отверстия сверлятся вертикально сверху вниз. № 1 и № 2 заканчиваются внутри детали, № 3 проходит насквозь.</p>
+  <table><thead><tr><th>Отверстие</th><th>Глубина, мм</th></tr></thead><tbody id="holes"></tbody></table>
+  <h2>Что означает линия А–А?</h2>
+  <p>Это линия разреза через центры отверстий. Её изгибы не означают ступеньку или канавку на поверхности бруска.</p>
+  <p class="note">Диаметр всех отверстий — 10 мм. Коническое дно глухих отверстий показано схематично с углом сверла 118°. Глубина отсчитывается до вершины конуса. Выход сверла за заготовку не является частью детали.</p>
+  <p class="note">Вариант 9 визуализирует размеры и координаты из otchetpr10.md. Геометрия варианта основана на принятом в отчёте масштабировании эскиза.</p>
+ </aside>
+</main>
+<script>
+'use strict';
+const canvas=document.querySelector('canvas'), gl=canvas.getContext('webgl',{antialias:true,alpha:false});
+if(!gl){document.querySelector('#error').hidden=false;document.querySelector('#error').textContent='Для просмотра требуется браузер с поддержкой WebGL.';throw Error('WebGL unavailable');}
+const palette=[[.22,.78,.98],[1,.68,.27],[.63,.53,1]];
+const models={variant:{w:62,h:58,t:56,holes:[[11.625,-21.75,36.4],[34.875,-36.25,50.4],[50.375,-14.5,56]]},original:{w:80,h:40,t:20,holes:[[15,-15,13],[45,-25,18],[65,-10,20]]}};
+let model=models.variant,yaw=-.85,pitch=1.02,zoom=1,outer,inner,edges,vp,eye;
+function shader(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
+const program=gl.createProgram();
+gl.attachShader(program,shader(gl.VERTEX_SHADER,`attribute vec3 position;attribute vec3 normal;attribute vec3 color;uniform mat4 matrix;varying vec3 n;varying vec3 c;void main(){gl_Position=matrix*vec4(position,1.);n=normal;c=color;}`));
+gl.attachShader(program,shader(gl.FRAGMENT_SHADER,`precision mediump float;varying vec3 n;varying vec3 c;uniform float alpha;uniform float unlit;void main(){float light=.48+.52*abs(dot(normalize(n),normalize(vec3(-.4,.6,1.))));gl_FragColor=vec4(c*mix(light,1.,unlit),alpha);}`));
+gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);
+const loc={position:gl.getAttribLocation(program,'position'),normal:gl.getAttribLocation(program,'normal'),color:gl.getAttribLocation(program,'color'),matrix:gl.getUniformLocation(program,'matrix'),alpha:gl.getUniformLocation(program,'alpha'),unlit:gl.getUniformLocation(program,'unlit')};
+const sub=(a,b)=>a.map((v,i)=>v-b[i]),dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],unit=a=>{let n=Math.hypot(...a);return a.map(v=>v/(n||1));};
+function tri(out,a,b,c,col){const n=unit(cross(sub(b,a),sub(c,a)));for(const p of[a,b,c])out.push(...p,...n,...col);}
+function quad(out,a,b,c,d,col){tri(out,a,b,c,col);tri(out,a,c,d,col);}
+function rect(out,x0,x1,y0,y1,z,col){if(x1-x0>1e-8&&y1-y0>1e-8)quad(out,[x0,y0,z],[x1,y0,z],[x1,y1,z],[x0,y1,z],col);}
+function surface(out,z,holes,col){
+ const cuts=[0,model.w,...holes.flatMap(h=>[h[0]-5,h[0]+5])].sort((a,b)=>a-b);
+ for(let i=0;i<cuts.length-1;i++){
+  const x0=cuts[i],x1=cuts[i+1],hole=holes.find(h=>(x0+x1)/2>h[0]-5&&(x0+x1)/2<h[0]+5);
+  if(!hole){rect(out,x0,x1,-model.h,0,z,col);continue;}
+  const [x,y]=hole;rect(out,x0,x1,-model.h,y-5,z,col);rect(out,x0,x1,y+5,0,z,col);
+  for(let j=0;j<96;j++){
+   const a=j*Math.PI/48,b=(j+1)*Math.PI/48;
+   const p=t=>[x+5*Math.cos(t),y+5*Math.sin(t),z],q=t=>{const k=5/Math.max(Math.abs(Math.cos(t)),Math.abs(Math.sin(t)));return[x+k*Math.cos(t),y+k*Math.sin(t),z];};
+   quad(out,p(a),p(b),q(b),q(a),col);
+  }
+ }
+}
+function upload(data){const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.STATIC_DRAW);return{buffer:b,count:data.length/9};}
+function build(){
+ for(const mesh of[outer,inner,edges])if(mesh)gl.deleteBuffer(mesh.buffer);
+ const o=[],ins=[],line=[],col=[.53,.65,.76],w=model.w,h=model.h,t=model.t;
+ surface(o,0,model.holes,col);surface(o,-t,[model.holes[2]],col);
+ quad(o,[0,0,0],[w,0,0],[w,0,-t],[0,0,-t],col);
+ quad(o,[0,-h,0],[w,-h,0],[w,-h,-t],[0,-h,-t],col);
+ quad(o,[0,0,0],[0,-h,0],[0,-h,-t],[0,0,-t],col);
+ quad(o,[w,0,0],[w,-h,0],[w,-h,-t],[w,0,-t],col);
+ model.holes.forEach(([x,y,depth],i)=>{
+  const tip=i===2?0:5/Math.tan(59*Math.PI/180),bottom=-depth+tip,c=palette[i];
+  for(let j=0;j<96;j++){
+   const a=j*Math.PI/48,b=(j+1)*Math.PI/48,p=(angle,z)=>[x+5*Math.cos(angle),y+5*Math.sin(angle),z];
+   quad(ins,p(a,0),p(b,0),p(b,bottom),p(a,bottom),c);
+   if(i!==2)tri(ins,p(a,bottom),p(b,bottom),[x,y,-depth],c);
+   for(const z of[0,bottom])for(const v of[p(a,z),p(b,z)])line.push(...v,0,0,1,...c);
+  }
+  for(const a of[0,Math.PI/2,Math.PI,3*Math.PI/2])for(const v of[[x+5*Math.cos(a),y+5*Math.sin(a),0],[x+5*Math.cos(a),y+5*Math.sin(a),bottom]])line.push(...v,0,0,1,...c);
+ });
+ const corners=[[0,0,0],[w,0,0],[w,-h,0],[0,-h,0],[0,0,-t],[w,0,-t],[w,-h,-t],[0,-h,-t]];
+ for(const[a,b]of[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]])for(const p of[corners[a],corners[b]])line.push(...p,0,0,1,.65,.77,.9);
+ outer=upload(o);inner=upload(ins);edges=upload(line);
+ const fmt=n=>String(n).replace('.',',');
+ document.querySelector('#size').textContent=`Брусок ${w} × ${h} × ${t} мм`;
+ document.querySelector('#holes').innerHTML=model.holes.map((v,i)=>`<tr><td><span class="legend" style="background:rgb(${palette[i].map(x=>Math.round(x*255)).join(',')})"></span>№ ${i+1}</td><td>${i===2?'Сквозное':fmt(v[2])}</td></tr>`).join('');
+ document.querySelector('#labels').innerHTML=model.holes.map((_,i)=>`<span class="badge" style="background:rgb(${palette[i].map(x=>Math.round(x*255)).join(',')})">${i+1}</span>`).join('');
+ render();
+}
+function multiply(a,b){const r=new Float32Array(16);for(let col=0;col<4;col++)for(let row=0;row<4;row++)for(let k=0;k<4;k++)r[col*4+row]+=a[k*4+row]*b[col*4+k];return r;}
+function camera(){
+ const target=[model.w/2,-model.h/2,-model.t/2],d=Math.hypot(model.w,model.h,model.t)*1.65/zoom;
+ eye=[target[0]+d*Math.sin(pitch)*Math.cos(yaw),target[1]+d*Math.sin(pitch)*Math.sin(yaw),target[2]+d*Math.cos(pitch)];
+ const z=unit(sub(eye,target)),x=unit(cross([0,0,1],z)),y=cross(z,x),v=new Float32Array([x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-dot(x,eye),-dot(y,eye),-dot(z,eye),1]);
+ const f=1/Math.tan(Math.PI/8),aspect=canvas.width/canvas.height,near=.1,far=3000,p=new Float32Array([f/aspect,0,0,0,0,f,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0]);
+ vp=multiply(p,v);
+}
+function draw(mesh,alpha,mode,unlit=0){gl.bindBuffer(gl.ARRAY_BUFFER,mesh.buffer);for(const[k,offset]of[['position',0],['normal',12],['color',24]]){gl.enableVertexAttribArray(loc[k]);gl.vertexAttribPointer(loc[k],3,gl.FLOAT,false,36,offset);}gl.uniform1f(loc.alpha,alpha);gl.uniform1f(loc.unlit,unlit);gl.drawArrays(mode,0,mesh.count);}
+function render(){
+ if(!outer)return;const box=canvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(box.width*ratio);canvas.height=Math.round(box.height*ratio);gl.viewport(0,0,canvas.width,canvas.height);camera();gl.uniformMatrix4fv(loc.matrix,false,vp);gl.clearColor(.063,.094,.153,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);
+ const xray=document.querySelector('#xray').checked;gl.disable(gl.BLEND);gl.depthMask(true);draw(inner,1,gl.TRIANGLES);
+ if(xray){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);draw(outer,.14,gl.TRIANGLES);draw(edges,.75,gl.LINES,1);gl.depthMask(true);}else{draw(outer,1,gl.TRIANGLES);draw(edges,1,gl.LINES,1);}
+ document.querySelectorAll('.badge').forEach((el,i)=>{const h=model.holes[i],p=[h[0],h[1],3,1],q=[0,0,0,0];for(let row=0;row<4;row++)for(let k=0;k<4;k++)q[row]+=vp[k*4+row]*p[k];el.style.left=(q[0]/q[3]*.5+.5)*box.width+'px';el.style.top=(-q[1]/q[3]*.5+.5)*box.height+'px';el.style.display=pitch>Math.PI/2&&!xray?'none':'block';});
+}
+const pointers=new Map();let previousDistance=0;
+canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,[e.clientX,e.clientY]);previousDistance=0;});
+canvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;const old=pointers.get(e.pointerId);pointers.set(e.pointerId,[e.clientX,e.clientY]);if(pointers.size===1){yaw-=(e.clientX-old[0])*.009;pitch=Math.max(.015,Math.min(Math.PI-.015,pitch+(e.clientY-old[1])*.009));}else{const p=[...pointers.values()],d=Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]);if(previousDistance)zoom=Math.max(.45,Math.min(3,zoom*d/previousDistance));previousDistance=d;}render();});
+for(const event of['pointerup','pointercancel'])canvas.addEventListener(event,e=>{pointers.delete(e.pointerId);previousDistance=0;});
+canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.45,Math.min(3,zoom*Math.exp(-e.deltaY*.001)));render();},{passive:false});
+document.querySelector('#xray').addEventListener('change',render);
+document.querySelector('#model').addEventListener('change',e=>{model=models[e.target.value];zoom=1;build();});
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{zoom=1;({iso:()=>{yaw=-.85;pitch=1.02;},top:()=>{yaw=-Math.PI/2;pitch=.015;},bottom:()=>{yaw=-Math.PI/2;pitch=Math.PI-.015;},front:()=>{yaw=-Math.PI/2;pitch=Math.PI/2;}}[b.dataset.view])();render();}));
+new ResizeObserver(render).observe(document.querySelector('#view'));build();
+</script>
+</html>
