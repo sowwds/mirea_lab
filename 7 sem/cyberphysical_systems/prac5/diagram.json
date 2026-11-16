@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "author": "Aleksey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-st-nucleo-c031c6", "id": "nucleo", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-servo", "id": "servo", "top": -50, "left": 410, "attrs": { "horn": "single" } },
+    { "type": "wokwi-potentiometer", "id": "pot", "top": 120, "left": 410, "attrs": { "value": "512" } },
+    { "type": "wokwi-a4988", "id": "driver", "top": 250, "left": 420, "attrs": {} },
+    { "type": "wokwi-stepper-motor", "id": "motor", "top": 200, "left": 700, "attrs": { "size": "17", "display": "angle", "arrow": "orange", "gearRatio": "1:1" } },
+    { "type": "wokwi-pushbutton", "id": "cw", "top": 440, "left": 380, "attrs": { "color": "green", "label": "CW (D)", "key": "D", "bounce": "0" } },
+    { "type": "wokwi-pushbutton", "id": "ccw", "top": 440, "left": 540, "attrs": { "color": "blue", "label": "CCW (A)", "key": "A", "bounce": "0" } }
+  ],
+  "connections": [
+    [ "nucleo:D11", "servo:PWM", "orange", [] ],
+    [ "servo:V+", "nucleo:5V", "red", [] ],
+    [ "servo:GND", "nucleo:GND.1", "black", [] ],
+    [ "pot:VCC", "nucleo:3V3", "red", [] ],
+    [ "pot:GND", "nucleo:GND.1", "black", [] ],
+    [ "pot:SIG", "nucleo:A0", "orange", [] ],
+    [ "nucleo:D6", "driver:STEP", "green", [] ],
+    [ "nucleo:D5", "driver:DIR", "blue", [] ],
+    [ "driver:VDD", "nucleo:3V3", "red", [] ],
+    [ "driver:GND.1", "nucleo:GND.1", "black", [] ],
+    [ "driver:GND.2", "nucleo:GND.1", "black", [] ],
+    [ "driver:RESET", "nucleo:3V3", "red", [] ],
+    [ "driver:SLEEP", "nucleo:3V3", "red", [] ],
+    [ "driver:ENABLE", "nucleo:GND.1", "black", [] ],
+    [ "driver:MS1", "nucleo:GND.1", "black", [] ],
+    [ "driver:MS2", "nucleo:GND.1", "black", [] ],
+    [ "driver:MS3", "nucleo:GND.1", "black", [] ],
+    [ "driver:2B", "motor:A-", "orange", [] ],
+    [ "driver:2A", "motor:A+", "orange", [] ],
+    [ "driver:1A", "motor:B+", "purple", [] ],
+    [ "driver:1B", "motor:B-", "purple", [] ],
+    [ "nucleo:D2", "cw:1.l", "green", [] ],
+    [ "cw:2.l", "nucleo:GND.1", "black", [] ],
+    [ "nucleo:D3", "ccw:1.l", "blue", [] ],
+    [ "ccw:2.l", "nucleo:GND.1", "black", [] ]
+  ],
+  "dependencies": {}
+}
