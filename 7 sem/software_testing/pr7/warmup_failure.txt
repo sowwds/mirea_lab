@@ -1,0 +1,37 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.8, pytest-9.2.0, pluggy-1.7.0 -- /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7/.venv/bin/python
+cachedir: .pytest_cache
+Using --randomly-seed=20261112
+rootdir: /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7
+plugins: randomly-5.1.0, anyio-4.16.0, cov-7.1.0
+collecting ... collected 1 item
+
+warmup/test_warmup.py::test_create_after_delete_preserves_existing_item FAILED [100%]
+
+=================================== FAILURES ===================================
+_______________ test_create_after_delete_preserves_existing_item _______________
+
+warmup_client = <starlette.testclient.TestClient object at 0x7fea1a654050>
+
+    def test_create_after_delete_preserves_existing_item(warmup_client):
+        first = warmup_client.post("/items", json={"name": "A", "price": 10})
+        second = warmup_client.post("/items", json={"name": "B", "price": 20})
+        assert first.status_code == second.status_code == 201
+        assert warmup_client.delete(f"/items/{first.json()['id']}").status_code == 204
+    
+        third = warmup_client.post("/items", json={"name": "C", "price": 30})
+    
+        assert third.status_code == 201
+>       assert third.json()["id"] != second.json()["id"]
+E       assert 2 != 2
+
+warmup/test_warmup.py:30: AssertionError
+=============================== warnings summary ===============================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED warmup/test_warmup.py::test_create_after_delete_preserves_existing_item
+========================= 1 failed, 1 warning in 0.36s =========================

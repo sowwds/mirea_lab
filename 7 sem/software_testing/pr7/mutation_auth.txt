@@ -1,0 +1,143 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.8, pytest-9.2.0, pluggy-1.7.0 -- /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7/.venv/bin/python
+cachedir: .pytest_cache
+Using --randomly-seed=20261112
+rootdir: /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7
+plugins: randomly-5.1.0, anyio-4.16.0, cov-7.1.0
+collecting ... collected 5 items
+
+tests/test_api.py::test_viewer_cannot_write[put] FAILED                  [ 20%]
+tests/test_api.py::test_viewer_cannot_write[patch] FAILED                [ 40%]
+tests/test_api.py::test_viewer_cannot_write[delete] FAILED               [ 60%]
+tests/test_api.py::test_viewer_cannot_write[seats] FAILED                [ 80%]
+tests/test_api.py::test_viewer_cannot_write[post] FAILED                 [100%]
+
+=================================== FAILURES ===================================
+________________________ test_viewer_cannot_write[put] _________________________
+
+client = <starlette.testclient.TestClient object at 0x7f1dcbe3d010>
+viewer_headers = {'Authorization': 'Bearer j-MBXJA7KKQdWQNntHIbjMtzTveqUjq84FQ6HfFlpQw'}
+make_item = <function make_item.<locals>.factory at 0x7f1dcbee7a00>
+method = 'PUT', suffix = '/{id}', body = {'name': 'New', 'price': 1, 'seats': 0}
+
+    @pytest.mark.parametrize("method,suffix,body", [
+        pytest.param("POST", "", {"name": "New", "price": 1}, id="post"),
+        pytest.param("PUT", "/{id}", {"name": "New", "price": 1, "seats": 0}, id="put"),
+        pytest.param("PATCH", "/{id}", {"price": 1}, id="patch"),
+        pytest.param("DELETE", "/{id}", None, id="delete"),
+        pytest.param("POST", "/{id}/seats", {"delta": 1}, id="seats"),
+    ])
+    def test_viewer_cannot_write(client, viewer_headers, make_item, method, suffix, body):
+        ticket = make_item()
+        path = "/tickets" + suffix.format(id=ticket["id"])
+        response = client.request(method, path, json=body, headers=viewer_headers)
+>       assert response.status_code == 403
+E       assert 200 == 403
+E        +  where 200 = <Response [200 OK]>.status_code
+
+tests/test_api.py:64: AssertionError
+_______________________ test_viewer_cannot_write[patch] ________________________
+
+client = <starlette.testclient.TestClient object at 0x7f1dcbeddf90>
+viewer_headers = {'Authorization': 'Bearer 1Y6TsU1XcZs1rV6j9ShTjNq3aVb2VTiKQdWdQnrYJEM'}
+make_item = <function make_item.<locals>.factory at 0x7f1dcbd8a400>
+method = 'PATCH', suffix = '/{id}', body = {'price': 1}
+
+    @pytest.mark.parametrize("method,suffix,body", [
+        pytest.param("POST", "", {"name": "New", "price": 1}, id="post"),
+        pytest.param("PUT", "/{id}", {"name": "New", "price": 1, "seats": 0}, id="put"),
+        pytest.param("PATCH", "/{id}", {"price": 1}, id="patch"),
+        pytest.param("DELETE", "/{id}", None, id="delete"),
+        pytest.param("POST", "/{id}/seats", {"delta": 1}, id="seats"),
+    ])
+    def test_viewer_cannot_write(client, viewer_headers, make_item, method, suffix, body):
+        ticket = make_item()
+        path = "/tickets" + suffix.format(id=ticket["id"])
+        response = client.request(method, path, json=body, headers=viewer_headers)
+>       assert response.status_code == 403
+E       assert 200 == 403
+E        +  where 200 = <Response [200 OK]>.status_code
+
+tests/test_api.py:64: AssertionError
+_______________________ test_viewer_cannot_write[delete] _______________________
+
+client = <starlette.testclient.TestClient object at 0x7f1dcbdaa710>
+viewer_headers = {'Authorization': 'Bearer pkKFTU9HT-aXup5FYI0BtcY7xLKFt5_HViR10Ka97h4'}
+make_item = <function make_item.<locals>.factory at 0x7f1dcbde3ab0>
+method = 'DELETE', suffix = '/{id}', body = None
+
+    @pytest.mark.parametrize("method,suffix,body", [
+        pytest.param("POST", "", {"name": "New", "price": 1}, id="post"),
+        pytest.param("PUT", "/{id}", {"name": "New", "price": 1, "seats": 0}, id="put"),
+        pytest.param("PATCH", "/{id}", {"price": 1}, id="patch"),
+        pytest.param("DELETE", "/{id}", None, id="delete"),
+        pytest.param("POST", "/{id}/seats", {"delta": 1}, id="seats"),
+    ])
+    def test_viewer_cannot_write(client, viewer_headers, make_item, method, suffix, body):
+        ticket = make_item()
+        path = "/tickets" + suffix.format(id=ticket["id"])
+        response = client.request(method, path, json=body, headers=viewer_headers)
+>       assert response.status_code == 403
+E       assert 204 == 403
+E        +  where 204 = <Response [204 No Content]>.status_code
+
+tests/test_api.py:64: AssertionError
+_______________________ test_viewer_cannot_write[seats] ________________________
+
+client = <starlette.testclient.TestClient object at 0x7f1dcbdba8b0>
+viewer_headers = {'Authorization': 'Bearer yROtda0viunS2AB3mrUHg9bMb-o0KKEPi5aFzHx8msU'}
+make_item = <function make_item.<locals>.factory at 0x7f1dcbde2400>
+method = 'POST', suffix = '/{id}/seats', body = {'delta': 1}
+
+    @pytest.mark.parametrize("method,suffix,body", [
+        pytest.param("POST", "", {"name": "New", "price": 1}, id="post"),
+        pytest.param("PUT", "/{id}", {"name": "New", "price": 1, "seats": 0}, id="put"),
+        pytest.param("PATCH", "/{id}", {"price": 1}, id="patch"),
+        pytest.param("DELETE", "/{id}", None, id="delete"),
+        pytest.param("POST", "/{id}/seats", {"delta": 1}, id="seats"),
+    ])
+    def test_viewer_cannot_write(client, viewer_headers, make_item, method, suffix, body):
+        ticket = make_item()
+        path = "/tickets" + suffix.format(id=ticket["id"])
+        response = client.request(method, path, json=body, headers=viewer_headers)
+>       assert response.status_code == 403
+E       assert 200 == 403
+E        +  where 200 = <Response [200 OK]>.status_code
+
+tests/test_api.py:64: AssertionError
+________________________ test_viewer_cannot_write[post] ________________________
+
+client = <starlette.testclient.TestClient object at 0x7f1dcc0e0e90>
+viewer_headers = {'Authorization': 'Bearer 7u45bZ4FKy7mAIMMv_6WQSvznvOM2KmAzt043qthJJw'}
+make_item = <function make_item.<locals>.factory at 0x7f1dcac68f60>
+method = 'POST', suffix = '', body = {'name': 'New', 'price': 1}
+
+    @pytest.mark.parametrize("method,suffix,body", [
+        pytest.param("POST", "", {"name": "New", "price": 1}, id="post"),
+        pytest.param("PUT", "/{id}", {"name": "New", "price": 1, "seats": 0}, id="put"),
+        pytest.param("PATCH", "/{id}", {"price": 1}, id="patch"),
+        pytest.param("DELETE", "/{id}", None, id="delete"),
+        pytest.param("POST", "/{id}/seats", {"delta": 1}, id="seats"),
+    ])
+    def test_viewer_cannot_write(client, viewer_headers, make_item, method, suffix, body):
+        ticket = make_item()
+        path = "/tickets" + suffix.format(id=ticket["id"])
+        response = client.request(method, path, json=body, headers=viewer_headers)
+>       assert response.status_code == 403
+E       assert 201 == 403
+E        +  where 201 = <Response [201 Created]>.status_code
+
+tests/test_api.py:64: AssertionError
+=============================== warnings summary ===============================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_api.py::test_viewer_cannot_write[put] - assert 200 == 403
+FAILED tests/test_api.py::test_viewer_cannot_write[patch] - assert 200 == 403
+FAILED tests/test_api.py::test_viewer_cannot_write[delete] - assert 204 == 403
+FAILED tests/test_api.py::test_viewer_cannot_write[seats] - assert 200 == 403
+FAILED tests/test_api.py::test_viewer_cannot_write[post] - assert 201 == 403
+========================= 5 failed, 1 warning in 0.38s =========================

@@ -1,0 +1,11 @@
+Filename: /home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac4/variant_9.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     5 405.0703 MiB 405.0703 MiB           1   def repeated_data(n: int) -> tuple[int, float]:
+     6                                             # Внутренний sum сохраняет сложение пяти значений одной записи;
+     7                                             # внешний sum — исходный порядок сложения сумм записей.
+     8 405.0703 MiB   0.0000 MiB     1120003       total = sum(sum(random.random() for _ in range(5)) for _ in range(n))
+     9 405.0703 MiB   0.0000 MiB           1       return len(range(n)), total
+
+

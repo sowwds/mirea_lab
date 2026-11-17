@@ -1,0 +1,27 @@
+Filename: /home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac4/variant_9_baseline.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     6 403.8945 MiB 403.8945 MiB           1   def repeated_data(n: int) -> tuple[int, float]:
+     7 403.8945 MiB   0.0000 MiB           1       statuses = ["pending", "completed", "cancelled", "processing"]
+     8 403.8945 MiB   0.0000 MiB           1       categories = ["A", "B", "C", "D", "E"]
+     9 403.8945 MiB   0.0000 MiB           1       records = []
+    10 415.9531 MiB   0.0000 MiB       80001       for i in range(n):
+    11 415.9531 MiB   0.0000 MiB       80000           rec = {
+    12 415.9531 MiB   0.9648 MiB       80000               "id": i,
+    13 415.9531 MiB   0.0000 MiB       80000               "status": statuses[i % 4],
+    14 415.9531 MiB   0.0000 MiB       80000               "category": categories[i % 5],
+    15 415.9531 MiB   0.5898 MiB       80000               "description": f"Item number {i % 100} in category {categories[i % 5]}",
+    16 415.9531 MiB   6.8828 MiB      480000               "values": [random.random() for _ in range(5)],
+    17                                                 }
+    18 415.9531 MiB   3.6211 MiB       80000           records.append(rec)
+    19 415.9531 MiB   0.0000 MiB           1       groups = {}
+    20 430.6953 MiB   4.8906 MiB       80001       for r in records:
+    21 430.6953 MiB   0.0000 MiB       80000           key = r["status"]
+    22 430.6953 MiB   0.0000 MiB       80000           if key not in groups:
+    23 415.9531 MiB   0.0000 MiB           4               groups[key] = []
+    24 430.6953 MiB   9.8516 MiB       80000           groups[key].append(r.copy())
+    25 430.6992 MiB   0.0039 MiB      160003       total = sum(sum(r["values"]) for r in records)
+    26 430.6992 MiB   0.0000 MiB           1       return len(records), total
+
+

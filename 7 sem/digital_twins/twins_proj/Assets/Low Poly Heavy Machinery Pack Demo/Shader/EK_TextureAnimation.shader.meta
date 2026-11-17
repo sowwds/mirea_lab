@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 2a1e5a5dc5f851f4eb5631345fc89246
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 272937
+  packageName: Low Poly Heavy Machinery Pack Demo
+  packageVersion: 1.0
+  assetPath: Assets/Low Poly Heavy Machinery Pack Demo/Shader/EK_TextureAnimation.shader
+  uploadId: 634005

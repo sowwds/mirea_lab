@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f0ed8b7710060c747aa4d3a45711438e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 272937
+  packageName: Low Poly Heavy Machinery Pack Demo
+  packageVersion: 1.0
+  assetPath: Assets/Low Poly Heavy Machinery Pack Demo/Scripts/OpenLinkOnButtonClick.cs
+  uploadId: 634005

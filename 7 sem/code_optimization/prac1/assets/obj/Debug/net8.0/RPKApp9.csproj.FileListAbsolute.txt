@@ -1,0 +1,15 @@
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/bin/Debug/net8.0/RPKApp9
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/bin/Debug/net8.0/RPKApp9.deps.json
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/bin/Debug/net8.0/RPKApp9.runtimeconfig.json
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/bin/Debug/net8.0/RPKApp9.dll
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/bin/Debug/net8.0/RPKApp9.pdb
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/RPKApp9.GeneratedMSBuildEditorConfig.editorconfig
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/RPKApp9.AssemblyInfoInputs.cache
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/RPKApp9.AssemblyInfo.cs
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/RPKApp9.csproj.CoreCompileInputs.cache
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/RPKApp9.sourcelink.json
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/RPKApp9.dll
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/refint/RPKApp9.dll
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/RPKApp9.pdb
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/RPKApp9.genruntimeconfig.cache
+/home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac1/assets/obj/Debug/net8.0/ref/RPKApp9.dll

@@ -1,0 +1,27 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.8, pytest-9.2.0, pluggy-1.7.0 -- /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr6/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr6
+collecting ... collected 19 items
+
+test_temperature_sensor.py::test_initial_temperature PASSED              [  5%]
+test_temperature_sensor.py::test_temperature_change PASSED               [ 10%]
+test_temperature_sensor.py::test_same_temperature[integer] PASSED        [ 15%]
+test_temperature_sensor.py::test_same_temperature[float] PASSED          [ 21%]
+test_temperature_sensor.py::test_multiple_subscribers[two] PASSED        [ 26%]
+test_temperature_sensor.py::test_multiple_subscribers[three] PASSED      [ 31%]
+test_temperature_sensor.py::test_unsubscribe PASSED                      [ 36%]
+test_temperature_sensor.py::test_unsubscribe_unknown PASSED              [ 42%]
+test_temperature_sensor.py::test_repeated_unsubscribe PASSED             [ 47%]
+test_temperature_sensor.py::test_temperature_values[negative] PASSED     [ 52%]
+test_temperature_sensor.py::test_temperature_values[zero] PASSED         [ 57%]
+test_temperature_sensor.py::test_temperature_values[fractional] PASSED   [ 63%]
+test_temperature_sensor.py::test_temperature_values[positive] PASSED     [ 68%]
+test_temperature_sensor.py::test_temperature_values[large] PASSED        [ 73%]
+test_temperature_sensor.py::test_temperature_sequence PASSED             [ 78%]
+test_temperature_sensor.py::test_subscriber_exception[first] PASSED      [ 84%]
+test_temperature_sensor.py::test_subscriber_exception[middle] PASSED     [ 89%]
+test_temperature_sensor.py::test_subscriber_exception[last] PASSED       [ 94%]
+test_temperature_sensor.py::test_duplicate_subscription PASSED           [100%]
+
+============================== 19 passed in 0.07s ==============================

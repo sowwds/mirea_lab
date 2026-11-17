@@ -1,0 +1,16 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.8, pytest-9.2.0, pluggy-1.7.0 -- /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr5/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr5
+collecting ... collected 8 items
+
+test_order_service.py::test_place_order_success[book] PASSED             [ 12%]
+test_order_service.py::test_place_order_success[pen] PASSED              [ 25%]
+test_order_service.py::test_place_order_success[laptop] PASSED           [ 37%]
+test_order_service.py::test_place_order_save_failed PASSED               [ 50%]
+test_order_service.py::test_place_order_storage_exception[exception] PASSED [ 62%]
+test_order_service.py::test_place_order_storage_exception[runtime-error] PASSED [ 75%]
+test_order_service.py::test_get_order_existing PASSED                    [ 87%]
+test_order_service.py::test_get_order_missing PASSED                     [100%]
+
+============================== 8 passed in 0.05s ===============================

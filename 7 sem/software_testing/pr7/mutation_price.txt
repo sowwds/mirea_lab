@@ -1,0 +1,66 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.8, pytest-9.2.0, pluggy-1.7.0 -- /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7/.venv/bin/python
+cachedir: .pytest_cache
+Using --randomly-seed=20261112
+rootdir: /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7
+plugins: randomly-5.1.0, anyio-4.16.0, cov-7.1.0
+collecting ... collected 2 items
+
+tests/test_api.py::test_price_uses_stubbed_rate[usd] FAILED              [ 50%]
+tests/test_api.py::test_price_uses_stubbed_rate[eur] FAILED              [100%]
+
+=================================== FAILURES ===================================
+______________________ test_price_uses_stubbed_rate[usd] _______________________
+
+client = <starlette.testclient.TestClient object at 0x7f6b68361010>
+viewer_headers = {'Authorization': 'Bearer vRt8fAhfkaw21bmezhGFzKlS0Z-_1BzHHkpMoJ-ufA0'}
+make_item = <function make_item.<locals>.factory at 0x7f6b68403b60>
+rates = <Mock id='140099289825360'>, currency = 'USD', expected = 1.0
+
+    @pytest.mark.parametrize("currency,expected", [("USD", 1.0), ("EUR", 0.9)], ids=["usd", "eur"])
+    def test_price_uses_stubbed_rate(client, viewer_headers, make_item, rates, currency, expected):
+        ticket = make_item(price=100)
+        response = client.get(f"/tickets/{ticket['id']}/price", params={"currency": currency}, headers=viewer_headers)
+        assert response.status_code == 200
+        assert set(response.json()) == {"currency", "price"}
+        assert response.json()["currency"] == currency
+>       assert response.json()["price"] == pytest.approx(expected)
+E       assert 10000.0 == 1.0 ± 1.0e-06
+E         
+E         comparison failed
+E         Obtained: 10000.0
+E         Expected: 1.0 ± 1.0e-06
+
+tests/test_api.py:282: AssertionError
+______________________ test_price_uses_stubbed_rate[eur] _______________________
+
+client = <starlette.testclient.TestClient object at 0x7f6b68405f90>
+viewer_headers = {'Authorization': 'Bearer k9AUlSa_i_rg7NkltY6z6BfHhIvscLTHudygqhgz_n4'}
+make_item = <function make_item.<locals>.factory at 0x7f6b67ac8b40>
+rates = <Mock id='140099290983328'>, currency = 'EUR', expected = 0.9
+
+    @pytest.mark.parametrize("currency,expected", [("USD", 1.0), ("EUR", 0.9)], ids=["usd", "eur"])
+    def test_price_uses_stubbed_rate(client, viewer_headers, make_item, rates, currency, expected):
+        ticket = make_item(price=100)
+        response = client.get(f"/tickets/{ticket['id']}/price", params={"currency": currency}, headers=viewer_headers)
+        assert response.status_code == 200
+        assert set(response.json()) == {"currency", "price"}
+        assert response.json()["currency"] == currency
+>       assert response.json()["price"] == pytest.approx(expected)
+E       assert 11111.111111111111 == 0.9 ± 9.0e-07
+E         
+E         comparison failed
+E         Obtained: 11111.111111111111
+E         Expected: 0.9 ± 9.0e-07
+
+tests/test_api.py:282: AssertionError
+=============================== warnings summary ===============================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_api.py::test_price_uses_stubbed_rate[usd] - assert 10000.0 ...
+FAILED tests/test_api.py::test_price_uses_stubbed_rate[eur] - assert 11111.11...
+========================= 2 failed, 1 warning in 0.20s =========================

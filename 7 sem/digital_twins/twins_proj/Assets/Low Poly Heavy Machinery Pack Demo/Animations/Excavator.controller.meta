@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b1ce751ae5c88064381585b28746a0bb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 272937
+  packageName: Low Poly Heavy Machinery Pack Demo
+  packageVersion: 1.0
+  assetPath: Assets/Low Poly Heavy Machinery Pack Demo/Animations/Excavator.controller
+  uploadId: 634005

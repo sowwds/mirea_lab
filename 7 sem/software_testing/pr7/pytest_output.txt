@@ -1,0 +1,118 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.8, pytest-9.2.0, pluggy-1.7.0 -- /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7/.venv/bin/python
+cachedir: .pytest_cache
+Using --randomly-seed=20261112
+rootdir: /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7
+plugins: randomly-5.1.0, anyio-4.16.0, cov-7.1.0
+collecting ... collected 86 items
+
+tests/test_rates.py::test_exchange_adapter_rejects_invalid_data[zero-rate] PASSED [  1%]
+tests/test_rates.py::test_exchange_adapter_rejects_invalid_data[string-rate] PASSED [  2%]
+tests/test_rates.py::test_exchange_adapter_rejects_invalid_data[missing-fields] PASSED [  3%]
+tests/test_rates.py::test_exchange_adapter_rejects_invalid_data[null-response] PASSED [  4%]
+tests/test_rates.py::test_exchange_adapter_rejects_invalid_data[bool-rate] PASSED [  5%]
+tests/test_rates.py::test_rates_dependency_closes_client PASSED          [  6%]
+tests/test_rates.py::test_exchange_adapter_rejects_invalid_data[provider-error] PASSED [  8%]
+tests/test_rates.py::test_exchange_adapter_wraps_timeout PASSED          [  9%]
+tests/test_rates.py::test_exchange_adapter_reads_rub_rate PASSED         [ 10%]
+tests/test_api.py::test_invalid_patch_preserves_ticket[over-limit] PASSED [ 11%]
+tests/test_api.py::test_invalid_token_returns_401[scheme] PASSED         [ 12%]
+tests/test_api.py::test_viewer_cannot_write[put] PASSED                  [ 13%]
+tests/test_api.py::test_invalid_query_returns_422[negative-price] PASSED [ 15%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[zero-price] PASSED [ 16%]
+tests/test_api.py::test_viewer_cannot_write[patch] PASSED                [ 17%]
+tests/test_api.py::test_update_duplicate_name_rolls_back[put] PASSED     [ 18%]
+tests/test_api.py::test_name_filter_handles_cyrillic PASSED              [ 19%]
+tests/test_api.py::test_limit_offset_returns_expected_slice PASSED       [ 20%]
+tests/test_api.py::test_invalid_query_returns_422[zero-limit] PASSED     [ 22%]
+tests/test_api.py::test_invalid_query_returns_422[reversed-range] PASSED [ 23%]
+tests/test_api.py::test_price_uses_stubbed_rate[usd] PASSED              [ 24%]
+tests/test_api.py::test_invalid_token_returns_401[unknown] PASSED        [ 25%]
+tests/test_api.py::test_price_filter_includes_boundaries PASSED          [ 26%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[empty-name] PASSED [ 27%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[seats-over-limit] PASSED [ 29%]
+tests/test_api.py::test_invalid_delta_returns_422[float] PASSED          [ 30%]
+tests/test_api.py::test_bad_login_returns_401[unknown-user] PASSED       [ 31%]
+tests/test_api.py::test_seats_decrease_returns_new_count PASSED          [ 32%]
+tests/test_api.py::test_invalid_delta_returns_422[zero] PASSED           [ 33%]
+tests/test_api.py::test_invalid_delta_returns_422[bool] PASSED           [ 34%]
+tests/test_api.py::test_invalid_query_returns_422[large-limit] PASSED    [ 36%]
+tests/test_api.py::test_update_duplicate_name_rolls_back[patch] PASSED   [ 37%]
+tests/test_api.py::test_create_ticket_returns_complete_object PASSED     [ 38%]
+tests/test_api.py::test_login_returns_bearer_token PASSED                [ 39%]
+tests/test_api.py::test_missing_ticket_returns_404[put] PASSED           [ 40%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[extra-field] PASSED [ 41%]
+tests/test_api.py::test_missing_ticket_returns_404[patch] PASSED         [ 43%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[numeric-name] PASSED [ 44%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[spaces-only] PASSED [ 45%]
+tests/test_api.py::test_invalid_patch_preserves_ticket[null-price] PASSED [ 46%]
+tests/test_api.py::test_seats_exact_boundaries_allowed[zero] PASSED      [ 47%]
+tests/test_api.py::test_get_ticket_as_viewer PASSED                      [ 48%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[long-name] PASSED [ 50%]
+tests/test_api.py::test_list_sorted_by_id PASSED                         [ 51%]
+tests/test_api.py::test_patch_preserves_unspecified_fields PASSED        [ 52%]
+tests/test_api.py::test_price_uses_stubbed_rate[eur] PASSED              [ 53%]
+tests/test_api.py::test_viewer_cannot_write[delete] PASSED               [ 54%]
+tests/test_api.py::test_invalid_patch_preserves_ticket[unknown-field] PASSED [ 55%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[negative-seats] PASSED [ 56%]
+tests/test_api.py::test_invalid_login_returns_422[missing-password] PASSED [ 58%]
+tests/test_api.py::test_unknown_currency_returns_422_without_rate_call PASSED [ 59%]
+tests/test_api.py::test_name_filter_is_case_insensitive PASSED           [ 60%]
+tests/test_api.py::test_invalid_login_returns_422[wrong-password-type] PASSED [ 61%]
+tests/test_api.py::test_seats_conflict_does_not_change_state[above-300] PASSED [ 62%]
+tests/test_api.py::test_put_requires_all_fields PASSED                   [ 63%]
+tests/test_api.py::test_missing_ticket_returns_404[price] PASSED         [ 65%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[string-price] PASSED [ 66%]
+tests/test_api.py::test_name_filter_escapes_wildcards PASSED             [ 67%]
+tests/test_api.py::test_create_after_delete_preserves_other_ticket PASSED [ 68%]
+tests/test_api.py::test_missing_ticket_returns_404[get] PASSED           [ 69%]
+tests/test_api.py::test_bad_login_returns_401[wrong-password] PASSED     [ 70%]
+tests/test_api.py::test_viewer_cannot_write[seats] PASSED                [ 72%]
+tests/test_api.py::test_invalid_delta_returns_422[string] PASSED         [ 73%]
+tests/test_api.py::test_delete_returns_204_then_get_404 PASSED           [ 74%]
+tests/test_api.py::test_seats_increase_returns_new_count PASSED          [ 75%]
+tests/test_api.py::test_without_token_returns_401 PASSED                 [ 76%]
+tests/test_api.py::test_seats_exact_boundaries_allowed[300] PASSED       [ 77%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[fractional-seats] PASSED [ 79%]
+tests/test_api.py::test_invalid_login_returns_422[empty-username] PASSED [ 80%]
+tests/test_api.py::test_invalid_patch_preserves_ticket[blank-name] PASSED [ 81%]
+tests/test_api.py::test_health_returns_ok_without_token PASSED           [ 82%]
+tests/test_api.py::test_invalid_login_returns_422[missing-both] PASSED   [ 83%]
+tests/test_api.py::test_missing_ticket_returns_404[delete] PASSED        [ 84%]
+tests/test_api.py::test_viewer_cannot_write[post] PASSED                 [ 86%]
+tests/test_api.py::test_duplicate_name_returns_409 PASSED                [ 87%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[missing-name] PASSED [ 88%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[boolean-seats] PASSED [ 89%]
+tests/test_api.py::test_invalid_create_returns_422_without_writing[negative-price] PASSED [ 90%]
+tests/test_api.py::test_missing_ticket_returns_404[seats] PASSED         [ 91%]
+tests/test_api.py::test_invalid_query_returns_422[negative-offset] PASSED [ 93%]
+tests/test_api.py::test_rate_failure_returns_502 PASSED                  [ 94%]
+tests/test_api.py::test_seats_conflict_does_not_change_state[below-zero] PASSED [ 95%]
+tests/test_api.py::test_empty_list_returns_empty_array PASSED            [ 96%]
+tests/test_api.py::test_put_replaces_all_fields PASSED                   [ 97%]
+tests/test_api.py::test_invalid_patch_preserves_ticket[empty] PASSED     [ 98%]
+warmup/test_warmup.py::test_create_after_delete_preserves_existing_item PASSED [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/aleksey/Documents/mirea_lab/7 sem/software_testing/pr7/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.14.8-final-0 ________________
+
+Name              Stmts   Miss  Cover   Missing
+-----------------------------------------------
+app/__init__.py       0      0   100%
+app/auth.py          27      0   100%
+app/database.py      22      2    91%   41-42
+app/main.py          91      0   100%
+app/rates.py         24      0   100%
+app/schemas.py       38      0   100%
+-----------------------------------------------
+TOTAL               202      2    99%
+Coverage HTML written to dir htmlcov
+Coverage JSON written to file coverage.json
+Required test coverage of 85% reached. Total coverage: 99.01%
+======================== 86 passed, 1 warning in 3.14s =========================

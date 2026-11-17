@@ -1,0 +1,52 @@
+Timer unit: 1e-09 s
+
+Total time: 40.4169 s
+File: /home/aleksey/Documents/mirea_lab/7 sem/code_optimization/prac3/variant_9_baseline.py
+Function: process_events at line 15
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    15                                           def process_events(events: list[Event], event_type: str) -> dict:
+    16         1       2863.0   2863.0      0.0      selected = []
+    17     12001   18155092.0   1512.8      0.0      for e in events:
+    18     12000   18287688.0   1524.0      0.0          if e.event_type == event_type:
+    19      3978    5997369.0   1507.6      0.0              selected.append(e)
+    20         1       2934.0   2934.0      0.0      n = len(selected)
+    21      3979    6506723.0   1635.3      0.0      for i in range(n):
+    22   7914231     1.23e+10   1550.7     30.4          for j in range(0, n - i - 1):
+    23   7910253     1.31e+10   1660.4     32.5              if selected[j].timestamp > selected[j + 1].timestamp:
+    24   3997223 6419333427.0   1605.9     15.9                  selected[j], selected[j + 1] = selected[j + 1], selected[j]
+    25         1       2444.0   2444.0      0.0      user_ids = []
+    26      3979    6788952.0   1706.2      0.0      for e in selected:
+    27      3978   12602582.0   3168.1      0.0          if e.user_id not in user_ids:
+    28       599    1028120.0   1716.4      0.0              user_ids.append(e.user_id)
+    29         1       2374.0   2374.0      0.0      per_user = {}
+    30       600    1070382.0   1784.0      0.0      for uid in user_ids:
+    31       599    1056143.0   1763.2      0.0          vals = []
+    32   2383421 3947094843.0   1656.1      9.8          for e in selected:
+    33   2382822 3945705336.0   1655.9      9.8              if e.user_id == uid:
+    34      3978    6787547.0   1706.3      0.0                  vals.append(e.value)
+    35       599    1037690.0   1732.4      0.0          total = 0.0
+    36      4577    7594525.0   1659.3      0.0          for v in vals:
+    37      3978    6616385.0   1663.2      0.0              total += v
+    38       599    1474466.0   2461.5      0.0          per_user[uid] = {
+    39       599    1166829.0   1948.0      0.0              "count": len(vals),
+    40       599    1040566.0   1737.2      0.0              "sum": total,
+    41       599    1143579.0   1909.1      0.0              "avg": total / len(vals) if vals else 0.0,
+    42                                                   }
+    43         1       1885.0   1885.0      0.0      top = []
+    44       600    1023391.0   1705.7      0.0      for uid, stats in per_user.items():
+    45       599    1050400.0   1753.6      0.0          top.append((uid, stats["sum"]))
+    46       600     989958.0   1649.9      0.0      for i in range(len(top)):
+    47       599     981809.0   1639.1      0.0          max_idx = i
+    48    179700  294577132.0   1639.3      0.7          for j in range(i + 1, len(top)):
+    49    179101  295180902.0   1648.1      0.7              if top[j][1] > top[max_idx][1]:
+    50      3032    4968421.0   1638.7      0.0                  max_idx = j
+    51       599     996961.0   1664.4      0.0          top[i], top[max_idx] = top[max_idx], top[i]
+    52         1       3842.0   3842.0      0.0      top5 = top[:5]
+    53         1       3353.0   3353.0      0.0      return {
+    54         1       2445.0   2445.0      0.0          "total_selected": len(selected),
+    55         1       1467.0   1467.0      0.0          "unique_users": len(user_ids),
+    56         1       1886.0   1886.0      0.0          "top5": top5,
+    57                                               }
+
